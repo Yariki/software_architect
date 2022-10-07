@@ -19,26 +19,37 @@ public class AddItemCommand : IRequest<bool>
 public class AddItemCommandHandler : IRequestHandler<AddItemCommand, bool>
 {
 
-    private IUnitOfWork _unitOfWork;
+    private ICartRepository _cartRepository;
     private IMapper _mapper;
 
-    public AddItemCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public AddItemCommandHandler(ICartRepository cartRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _cartRepository = cartRepository;
         _mapper = mapper;
     }
 
     public Task<bool> Handle(AddItemCommand request, CancellationToken cancellationToken)
     {
-        var cart = _unitOfWork.CartRepository.GetCart(request.CartId);
+        var cart = _cartRepository.GetCart(request.CartId);
         if (cart == null)
         {
             throw new CartServiceException("The cart does not exist");
         }
-
-        cart.Items.Add(_mapper.Map<CartItem>(request.Item));
-        _unitOfWork.CartRepository.UpdateCart(cart);
-        _unitOfWork.Dispose();
+        
+        var newItem = _mapper.Map<CartItem>(request.Item);
+        var existingItem = cart.Items.FirstOrDefault(x => x.Id == newItem.Id);
+        if (existingItem == null)
+        {
+            cart.Items.Add(newItem);    
+        }
+        else
+        {
+            existingItem.Quantity += newItem.Quantity;
+            existingItem.Price = newItem.Price;
+        }
+        
+        _cartRepository.UpdateCart(cart);
+        _cartRepository.Dispose();
 
         return Task.FromResult(true);
     }

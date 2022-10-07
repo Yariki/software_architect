@@ -17,19 +17,19 @@ public class RemoveCartItemCommand : IRequest<bool>
 
 public class RemoveCartItemCommandHandler : IRequestHandler<RemoveCartItemCommand, bool>
 {
-    private IUnitOfWork _unitOfWork;
+    private ICartRepository _cartRepository;
     private IMapper _mapper;
 
-    public RemoveCartItemCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public RemoveCartItemCommandHandler(ICartRepository cartRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _cartRepository = cartRepository;
         _mapper = mapper;
     }
 
 
     public Task<bool> Handle(RemoveCartItemCommand request, CancellationToken cancellationToken)
     {
-        var cart = _unitOfWork.CartRepository.GetCart(request.CartId);
+        var cart = _cartRepository.GetCart(request.CartId);
         if (cart == null)
         {
             throw new CartServiceException("The cart does not exist");
@@ -42,8 +42,8 @@ public class RemoveCartItemCommandHandler : IRequestHandler<RemoveCartItemComman
         }
 
         cart.Items.Remove(item);
-        _unitOfWork.CartRepository.UpdateCart(cart);
-        _unitOfWork.Dispose();
+        _cartRepository.UpdateCart(cart);
+        _cartRepository.Dispose();
 
         return Task.FromResult(true);
     }

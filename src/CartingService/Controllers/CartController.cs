@@ -10,8 +10,8 @@ namespace CartingService.Controllers
     [Route("cart")]
     public class CartController : ApiControllerBase
     {
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CartDto>> GetCart([FromQuery] GetCartQuery query)
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<CartDto>> GetCart([FromRoute] GetCartQuery query)
         {
             return await Mediator.Send(query);
         }
@@ -23,7 +23,7 @@ namespace CartingService.Controllers
             return Ok(await Mediator.Send(cmd));
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("remove")]
         public async Task<ActionResult> RemoveItem([FromBody] RemoveCartItemCommand cmd)
         {
