@@ -5,12 +5,15 @@ using MediatR;
 
 using System.Reflection;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -31,3 +34,5 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

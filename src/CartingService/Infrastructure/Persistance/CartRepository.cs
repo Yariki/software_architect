@@ -7,18 +7,11 @@ namespace CartingService.Infrastructure.Persistance;
 
 public class CartRepository : ICartRepository
 {
-    private LiteDatabase _db;
     private LiteCollection<Cart>? _dbSet;
 
-    public CartRepository()
+    public CartRepository(IApplicationDbContext context)
     {
-        var name = "CartBucket.db";
-        var dbFullPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-            name);
-        var connectionString = $"Filename={dbFullPath};Connection=shared";
-        _db = new LiteDatabase(connectionString);
-       
-        _dbSet = _db.GetCollection<Cart>() as LiteCollection<Cart>;
+        _dbSet =  context.Database.GetCollection<Cart>() as LiteCollection<Cart>;
     }
 
     protected LiteCollection<Cart>? Set => _dbSet;
@@ -40,10 +33,5 @@ public class CartRepository : ICartRepository
     public void UpdateCart(Cart cart)
     {
         _dbSet?.Update(cart);
-    }
-
-    public void Dispose()
-    {
-        _db?.Dispose();
     }
 }

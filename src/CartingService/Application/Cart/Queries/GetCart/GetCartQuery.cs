@@ -26,7 +26,6 @@ public class GetCartQueryHandler : IRequestHandler<GetCartQuery, CartDto>
     public async Task<CartDto> Handle(GetCartQuery request, CancellationToken cancellationToken)
     {
         var cart = _cartRepository.GetCart(request.Id);
-        _cartRepository.Dispose();
         return _mapper.Map<CartDto>(cart);
     }
 }

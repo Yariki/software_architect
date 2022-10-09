@@ -49,7 +49,6 @@ public class AddItemCommandHandler : IRequestHandler<AddItemCommand, bool>
         }
         
         _cartRepository.UpdateCart(cart);
-        _cartRepository.Dispose();
 
         return Task.FromResult(true);
     }

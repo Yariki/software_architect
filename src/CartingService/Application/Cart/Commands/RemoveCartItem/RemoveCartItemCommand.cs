@@ -43,7 +43,6 @@ public class RemoveCartItemCommandHandler : IRequestHandler<RemoveCartItemComman
 
         cart.Items.Remove(item);
         _cartRepository.UpdateCart(cart);
-        _cartRepository.Dispose();
 
         return Task.FromResult(true);
     }

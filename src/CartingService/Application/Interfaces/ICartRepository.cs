@@ -3,7 +3,7 @@ using CartingService.Domain.Entities;
 
 namespace CartingService.Application.Interfaces;
 
-public interface ICartRepository : IDisposable 
+public interface ICartRepository
 {
     Domain.Entities.Cart GetCart(Guid id);
 
