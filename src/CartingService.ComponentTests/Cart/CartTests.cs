@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace CartingService.ComponentTests.Cart;
 
 
-
+//todo did you heard anything about testing pyramid?
 public class CartTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
 

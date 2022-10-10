@@ -16,7 +16,7 @@ public class AddItemCommand : IRequest<bool>
 }
 
 
-public class AddItemCommandHandler : IRequestHandler<AddItemCommand, bool>
+public class AddItemCommandHandler : IRequestHandler<AddItemCommand, bool> //todo is the response as bool looks ok to you?
 {
 
     private ICartRepository _cartRepository;
@@ -33,10 +33,13 @@ public class AddItemCommandHandler : IRequestHandler<AddItemCommand, bool>
         var cart = _cartRepository.GetCart(request.CartId);
         if (cart == null)
         {
+            //todo how does exceptions are handled
             throw new CartServiceException("The cart does not exist");
         }
         
         var newItem = _mapper.Map<CartItem>(request.Item);
+        
+        //todo this looks like business logic, shouldn't it be in the Domain layer instead?
         var existingItem = cart.Items.FirstOrDefault(x => x.Id == newItem.Id);
         if (existingItem == null)
         {

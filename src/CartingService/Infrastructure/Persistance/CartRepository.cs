@@ -7,6 +7,7 @@ namespace CartingService.Infrastructure.Persistance;
 
 public class CartRepository : ICartRepository
 {
+    // todo so, you are expecting it to be null?
     private LiteCollection<Cart>? _dbSet;
 
     public CartRepository(IApplicationDbContext context)
@@ -16,6 +17,7 @@ public class CartRepository : ICartRepository
 
     protected LiteCollection<Cart>? Set => _dbSet;
 
+    //todo is it command or query?
     public Cart GetCart(Guid id)
     {
         var cart = _dbSet.FindOne(c => c.Id == id);

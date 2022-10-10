@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+//todo what would be better scope for the context Transient or Scoped?
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddControllers();
