@@ -1,14 +1,17 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using CartingService.Application.Cart.Commands.AddCartItem;
+using CartingService.Application.Cart.Commands.RemoveCartItem;
 using CartingService.Application.Cart.Queries.GetCart;
-using CartingService.Application.Interfaces;
-using CartingService.Domain.Entities;
+using CartingService.ComponentTests.Core;
+
 using FluentAssertions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
+
+using System;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CartingService.ComponentTests.Cart;
 
@@ -17,8 +20,6 @@ namespace CartingService.ComponentTests.Cart;
 public class CartTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
 
-    internal const string CartId = "DE916D22-9530-46A0-82A4-80E623B5648E";
-    
     private readonly CustomWebApplicationFactory<Program> _factory;
     private readonly HttpClient _client;
 
@@ -32,55 +33,67 @@ public class CartTests : IClassFixture<CustomWebApplicationFactory<Program>>
     [Fact]
     public async Task GetCart_ReturnCart()
     {
-         var response = await _client.GetAsync($"/cart/{CartId}");
+        var response = await _client.GetAsync($"/cart/{Consts.CartId}");
 
-         response.EnsureSuccessStatusCode();
-         var content = await response.Content.ReadAsStringAsync();
-         var cart = JsonConvert.DeserializeObject<CartDto>(content);
-         cart.Should().NotBeNull();
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        var cart = JsonConvert.DeserializeObject<CartDto>(content);
+        cart.Should().NotBeNull();
     }
-    
-}
 
-public class CustomWebApplicationFactory<TStartup>
-    : WebApplicationFactory<TStartup> where TStartup: class
-{
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    [Fact]
+    public async Task AddItem_ItemAddedSuccess()
     {
-        builder.ConfigureServices(services =>
+        //arrange
+        var addedItem = new AddItemCommand()
         {
-            var sp = services.BuildServiceProvider();
+            CartId = Guid.Parse(Consts.CartId)
+        };
+        addedItem.Item = new AddCartItemDto()
+        {
+            Id = Consts.CartItemIdAdd,
+            Image = "Image",
+            Name = "Name",
+            Price = 10,
+            Quantity = 2
+        };
 
-            using (var scope = sp.CreateScope())
-            {
-                var scopedServices = scope.ServiceProvider;
-                var db = scopedServices.GetRequiredService<IApplicationDbContext>();
+        //act 
+        var response = await _client.PostAsJsonAsync("/cart/add", addedItem);
 
-                try
-                {
-                    var collection = db.Database.GetCollection<Domain.Entities.Cart>();
-                    var cart = new Domain.Entities.Cart()
-                    {
-                        Id = Guid.Parse(CartTests.CartId)
-                    };
-                    cart.Items.Add(new CartItem()
-                        {
-                            Id = 1,
-                            Image = string.Empty,
-                            Price = 10.5m,
-                            Name = "Test product",
-                            Quantity = 1
-                        });
-                    collection.Insert(cart);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    
-                }
-                
-            }
-        });
+        //assert
+
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        var cart = JsonConvert.DeserializeObject<bool>(content);
+
+        cart.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task RemoveItem_RemovedItemSuccess()
+    {
+        //arrange
+        var removeCommand = new RemoveCartItemCommand()
+        {
+            CartId = Guid.Parse(Consts.CartId),
+            ItemId = Consts.CartItemIdRemove
+        };
+
+        //act
+        var request = new HttpRequestMessage(HttpMethod.Delete, "/cart/remove")
+        {
+            Content = new StringContent(JsonConvert.SerializeObject(removeCommand), Encoding.UTF8, "application/json")
+        };
+        var response = await _client.SendAsync(request);
+
+        //assert
+
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        var cart = JsonConvert.DeserializeObject<bool>(content);
+
+        cart.Should().BeTrue();
     }
 
 }
