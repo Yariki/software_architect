@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 
 using CartingService.Application.Interfaces;
 using CartingService.Domain.Entities;
@@ -8,7 +8,7 @@ using MediatR;
 
 namespace CartingService.Application.Cart.Commands.AddCartItem;
 
-public class AddItemCommand : IRequest<bool>
+public class AddItemCommand : IRequest<Models.CartDto>
 {
     public Guid CartId { get; set; }
 
@@ -16,7 +16,7 @@ public class AddItemCommand : IRequest<bool>
 }
 
 
-public class AddItemCommandHandler : IRequestHandler<AddItemCommand, bool> //todo is the response as bool looks ok to you?
+public class AddItemCommandHandler : IRequestHandler<AddItemCommand, CartDto>
 {
 
     private ICartRepository _cartRepository;
@@ -28,31 +28,19 @@ public class AddItemCommandHandler : IRequestHandler<AddItemCommand, bool> //tod
         _mapper = mapper;
     }
 
-    public Task<bool> Handle(AddItemCommand request, CancellationToken cancellationToken)
+    public Task<CartDto> Handle(AddItemCommand request, CancellationToken cancellationToken)
     {
         var cart = _cartRepository.GetCart(request.CartId);
         if (cart == null)
         {
-            //todo how does exceptions are handled
             throw new CartServiceException("The cart does not exist");
         }
         
         var newItem = _mapper.Map<CartItem>(request.Item);
-        
-        //todo this looks like business logic, shouldn't it be in the Domain layer instead?
-        var existingItem = cart.Items.FirstOrDefault(x => x.Id == newItem.Id);
-        if (existingItem == null)
-        {
-            cart.Items.Add(newItem);    
-        }
-        else
-        {
-            existingItem.Quantity += newItem.Quantity;
-            existingItem.Price = newItem.Price;
-        }
-        
+
+        cart.AddItem(newItem);
         _cartRepository.UpdateCart(cart);
 
-        return Task.FromResult(true);
+        return Task.FromResult(_mapper.Map<CartDto>(cart));
     }
 }

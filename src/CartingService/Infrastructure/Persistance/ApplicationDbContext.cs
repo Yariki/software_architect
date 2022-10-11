@@ -18,7 +18,7 @@ public class ApplicationDbContext : IApplicationDbContext
 
     }
     
-    public LiteDatabase Database
+    public ILiteDatabase Database
     {
         get => _db;
     }

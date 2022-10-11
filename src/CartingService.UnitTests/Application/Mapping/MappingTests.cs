@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using AutoFixture.Xunit2;
 using AutoMapper;
-using CartingService.Application.Cart.Queries.GetCart;
+using CartingService.Application.Cart.Models;
 using CartingService.Application.Common.Mappings;
 using CartingService.Domain.Entities;
 using FluentAssertions;

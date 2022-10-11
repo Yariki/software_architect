@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-
+using CartingService.Application.Cart.Models;
 using CartingService.Application.Interfaces;
 
 using MediatR;
