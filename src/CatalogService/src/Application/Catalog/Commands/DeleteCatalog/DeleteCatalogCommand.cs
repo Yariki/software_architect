@@ -25,7 +25,7 @@ public class DeleteCatalogCommandHandler : IRequestHandler<DeleteCatalogCommand,
 
         if (catalog == null)
         {
-            throw new NotFoundException(nameof(Catalog), request.Id);
+            throw new NotFoundException(nameof(CatalogService.Domain.Entities.Catalog), request.Id);
         }
 
         _applicationDbContext.Catalogs.Remove(catalog);

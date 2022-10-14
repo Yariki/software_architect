@@ -12,6 +12,8 @@
 
     <ItemGroup>
       <None Remove="appsettings.json" />
+      <None Remove="Product\" />
+      <None Remove="Product\Commands\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,4 +40,8 @@
         <ProjectReference Include="..\..\src\Infrastructure\Catalog.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Product\" />
+      <Folder Include="Product\Commands\" />
+    </ItemGroup>
 </Project>
