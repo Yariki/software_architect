@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using CartingService.Application.Interfaces;
+﻿using CartingService.Application.Interfaces;
 using CartingService.Domain.Entities;
 using LiteDB;
 
@@ -11,7 +10,7 @@ public class CartRepository : ICartRepository
 
     public CartRepository(IApplicationDbContext context)
     {
-        _dbSet =  context.Database.GetCollection<Cart>() as LiteCollection<Cart>;
+        _dbSet = context.Database.GetCollection<Cart>() as LiteCollection<Cart>;
     }
 
     protected LiteCollection<Cart>? Set => _dbSet;
@@ -19,9 +18,9 @@ public class CartRepository : ICartRepository
     public Cart GetCart(Guid id)
     {
         var cart = _dbSet.FindOne(c => c.Id == id);
-        if (cart != null) 
+        if (cart != null)
             return cart;
-        
+
         cart = new Cart()
         {
             Id = id
