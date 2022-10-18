@@ -5,6 +5,7 @@ namespace CartingService.UnitTests.Domain;
 
 public class CartTest
 {
+    //todo is this possible for this test to fail?
     [Fact]
     public void CartCreate_Success()
     {

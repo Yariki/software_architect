@@ -2,6 +2,7 @@
 
 public class CartItem
 {
+    //todo is this looks ok to you? e.g. when we are using this constructor does the model in the valid state?
     public CartItem()
     {
         
