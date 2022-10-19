@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using CartingService.Application.Interfaces;
 using LiteDB;
 
 namespace CartingService.Infrastructure.Persistance;
@@ -17,7 +16,7 @@ public class ApplicationDbContext : IApplicationDbContext
         _db = new LiteDatabase(connectionString);
 
     }
-    
+
     public ILiteDatabase Database
     {
         get => _db;

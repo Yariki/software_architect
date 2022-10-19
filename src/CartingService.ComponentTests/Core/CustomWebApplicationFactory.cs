@@ -1,11 +1,9 @@
-﻿using CartingService.Application.Interfaces;
+﻿using System;
 using CartingService.Domain.Entities;
-
+using CartingService.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-
-using System;
 
 namespace CartingService.ComponentTests.Core
 {
