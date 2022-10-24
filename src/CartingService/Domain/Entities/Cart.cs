@@ -1,5 +1,4 @@
-﻿using CartingService.Application.Exceptions;
-using CartingService.Domain.Exceptions;
+﻿using CartingService.Domain.Exceptions;
 using LiteDB;
 using MediatR;
 

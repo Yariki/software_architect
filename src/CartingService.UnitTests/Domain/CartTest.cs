@@ -1,5 +1,5 @@
-﻿using CartingService.Application.Exceptions;
-using CartingService.Domain.Entities;
+﻿using CartingService.Domain.Entities;
+using CartingService.Domain.Exceptions;
 using FluentAssertions;
 
 namespace CartingService.UnitTests.Domain;
