@@ -1,5 +1,6 @@
 ﻿using CartingService.Application.Cart.Commands.AddCartItem;
 using CartingService.Application.Cart.Commands.RemoveCartItem;
+using CartingService.Application.Cart.Models;
 using CartingService.Application.Cart.Queries.GetCart;
 using CartingService.ComponentTests.Core;
 
@@ -65,9 +66,9 @@ public class CartTests : IClassFixture<CustomWebApplicationFactory<Program>>
 
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-        var cart = JsonConvert.DeserializeObject<bool>(content);
+        var cart = JsonConvert.DeserializeObject<CartDto>(content);
 
-        cart.Should().BeTrue();
+        cart.Should().NotBeNull();
     }
 
     [Fact]
@@ -91,9 +92,9 @@ public class CartTests : IClassFixture<CustomWebApplicationFactory<Program>>
 
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-        var cart = JsonConvert.DeserializeObject<bool>(content);
+        var cart = JsonConvert.DeserializeObject<CartDto>(content);
 
-        cart.Should().BeTrue();
-    }
+		cart.Should().NotBeNull();
+	}
 
 }

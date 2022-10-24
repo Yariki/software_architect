@@ -1,4 +1,5 @@
 using CartingService.Application.Interfaces;
+using CartingService.Infrastructure.Filters;
 using CartingService.Infrastructure.Persistance;
 
 using MediatR;
@@ -13,10 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-//todo what would be better scope for the context Transient or Scoped?
-builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+builder.Services.AddSingleton<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddTransient<ICartRepository, CartRepository>();
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt => 
+{
+    opt.Filters.Add<GlobalExceptionFilter>();
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
