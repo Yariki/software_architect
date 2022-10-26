@@ -25,13 +25,14 @@ namespace CatalogService.Application.IntegrationTests.Product.Commands
 
             var add = new AddProductCommand()
             {
-                Name = "Product",                CatalogId = 1
+                Name = "Product",                CatalogId = 1,
+                Amount = 10
             };
 
             var result = await SendAsync(add);
 
             result.Should().BeGreaterThan(0);
-
+            
         }
     }
 }

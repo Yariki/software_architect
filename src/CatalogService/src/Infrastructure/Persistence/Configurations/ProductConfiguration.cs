@@ -21,6 +21,8 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsRequired();
 
         builder.Property(e => e.Amount)
+            .HasField("_amount")
+            .UsePropertyAccessMode(PropertyAccessMode.PreferFieldDuringConstruction)
             .IsRequired();
     }
 }
