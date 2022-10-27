@@ -5,12 +5,12 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CatalogService.Application.Product.Queries.GetProduct;
-public class GetProductQuery : IRequest<ProductDto>
+public class GetProductQuery : IRequest<ProductExtendedDto>
 {
     public int ProductId { get; set; }
 }
 
-public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductDto>
+public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductExtendedDto>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -21,9 +21,9 @@ public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductDt
         _mapper = mapper;
     }
 
-    public async Task<ProductDto> Handle(GetProductQuery request, CancellationToken cancellationToken)
+    public async Task<ProductExtendedDto> Handle(GetProductQuery request, CancellationToken cancellationToken)
     {
         var product = await _applicationDbContext.Products.FirstOrDefaultAsync(x => x.Id == request.ProductId);
-        return _mapper.Map<ProductDto>(product);
+        return _mapper.Map<ProductExtendedDto>(product);
     }
 }

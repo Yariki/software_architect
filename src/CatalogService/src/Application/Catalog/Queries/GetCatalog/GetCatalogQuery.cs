@@ -5,12 +5,12 @@ using MediatR;
 
 namespace Microsoft.Extensions.DependencyInjection.Catalog.Queries.GetCatalog;
 
-public class GetCatalogQuery : IRequest<CatalogDto>
+public class GetCatalogQuery : IRequest<CatalogExtendedDto>
 {
     public int CatalogId { get; set; }
 }
 
-public class GetCatelogQueryHandler : IRequestHandler<GetCatalogQuery, CatalogDto>
+public class GetCatelogQueryHandler : IRequestHandler<GetCatalogQuery, CatalogExtendedDto>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -21,10 +21,10 @@ public class GetCatelogQueryHandler : IRequestHandler<GetCatalogQuery, CatalogDt
         _mapper = mapper;
     }
 
-    public async Task<CatalogDto> Handle(GetCatalogQuery request, CancellationToken cancellationToken)
+    public async Task<CatalogExtendedDto> Handle(GetCatalogQuery request, CancellationToken cancellationToken)
     {
         var catalog = await _applicationDbContext.Catalogs.FindAsync(request.CatalogId);
 
-        return _mapper.Map<CatalogDto>(catalog);
+        return _mapper.Map<CatalogExtendedDto>(catalog);
     }
 }
