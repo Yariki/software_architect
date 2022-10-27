@@ -1,4 +1,6 @@
-﻿using CartingService.Application.Cart.Models;
+﻿using CartingService.Application.Cart.Commands.AddCartItem;
+using CartingService.Application.Cart.Commands.RemoveCartItem;
+using CartingService.Application.Cart.Models;
 using CartingService.Application.Cart.Queries.GetCart;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,4 +20,23 @@ public class CartController : ApiControllerBase
         
         return Ok(await Mediator.Send(new GetCartQueryV2(){Id = id}));
     }
+
+    [HttpPost]
+    [Route("add")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<CartDto>> AddItem([FromBody] AddItemCommand cmd)
+    {
+        return Ok(await Mediator.Send(cmd));
+    }
+
+    [HttpDelete]
+    [Route("remove")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<CartDto>> RemoveItem([FromBody] RemoveCartItemCommand cmd)
+    {
+        return Ok(await Mediator.Send(cmd));
+    }
+
 }
