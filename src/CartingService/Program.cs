@@ -1,4 +1,7 @@
 using CartingService.Application.Interfaces;
+using CartingService.Infrastructure.Configuration;
+using CartingService.Infrastructure.Filters;
+using CartingService.Infrastructure.Persistance;
 
 using MediatR;
 
@@ -17,7 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddSingleton<IApplicationDbContext, ApplicationDbContext>();
+builder.Services.AddSingleton<CartingService.Infrastructure.Persistance.IApplicationDbContext, ApplicationDbContext>();
+builder.Services.Configure<AzureServiceBusListenConfiguration>(builder.Configuration.GetSection("ServicecBus"));
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddControllers(opt => 
 {

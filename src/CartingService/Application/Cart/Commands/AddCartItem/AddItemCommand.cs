@@ -16,7 +16,7 @@ public class AddItemCommand : IRequest<Models.CartDto>
 }
 
 
-public class AddItemCommandHandler : IRequestHandler<AddItemCommand, CartDto>
+public class AddItemCommandHandler : IRequestHandler<AddItemCommand, Models.CartDto>
 {
 
     private ICartRepository _cartRepository;
@@ -28,7 +28,7 @@ public class AddItemCommandHandler : IRequestHandler<AddItemCommand, CartDto>
         _mapper = mapper;
     }
 
-    public Task<CartDto> Handle(AddItemCommand request, CancellationToken cancellationToken)
+    public Task<Models.CartDto> Handle(AddItemCommand request, CancellationToken cancellationToken)
     {
         var cart = _cartRepository.GetCart(request.CartId);
         if (cart == null)
@@ -41,6 +41,6 @@ public class AddItemCommandHandler : IRequestHandler<AddItemCommand, CartDto>
         cart.AddItem(newItem);
         _cartRepository.UpdateCart(cart);
 
-        return Task.FromResult(_mapper.Map<CartDto>(cart));
+        return Task.FromResult(_mapper.Map<Models.CartDto>(cart));
     }
 }

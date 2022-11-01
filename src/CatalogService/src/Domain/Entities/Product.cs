@@ -5,7 +5,7 @@ public class Product : BaseEntity
     
     private Product(){}
 
-    public Product(uint amount)
+    public Product(uint amount = 0)
     {
         _amount = amount;
     }
