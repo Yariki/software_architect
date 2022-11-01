@@ -1,6 +1,4 @@
-﻿using CartingService.Domain.Exceptions;
-
-namespace CartingService.Application.Exceptions;
+﻿namespace CartingService.Domain.Exceptions;
 
 public class CartItemNotFoundException : CartServiceException
 {

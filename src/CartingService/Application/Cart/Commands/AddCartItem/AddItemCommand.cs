@@ -1,5 +1,5 @@
 using AutoMapper;
-
+using CartingService.Application.Cart.Models;
 using CartingService.Application.Interfaces;
 using CartingService.Domain.Entities;
 using CartingService.Domain.Exceptions;
@@ -35,7 +35,7 @@ public class AddItemCommandHandler : IRequestHandler<AddItemCommand, CartDto>
         {
             throw new CartServiceException("The cart does not exist");
         }
-        
+
         var newItem = _mapper.Map<CartItem>(request.Item);
 
         cart.AddItem(newItem);

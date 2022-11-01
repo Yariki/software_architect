@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CartingService.Application.Cart.Models;
-using CartingService.Application.Exceptions;
 using CartingService.Application.Interfaces;
 using CartingService.Domain.Exceptions;
 

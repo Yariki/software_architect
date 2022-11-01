@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CartingService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    
     public abstract class ApiControllerBase : ControllerBase
     {
         private ISender _mediator = null!;
