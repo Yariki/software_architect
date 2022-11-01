@@ -1,6 +1,15 @@
 ﻿namespace CatalogService.Domain.Entities;
 public class Product : BaseEntity
 {
+    private uint _amount;
+    
+    private Product(){}
+
+    public Product(uint amount)
+    {
+        _amount = amount;
+    }
+
     public string Name { get; set; }
 
     public string Description { get; set; }
@@ -13,31 +22,31 @@ public class Product : BaseEntity
 
     public decimal Price { get; set; }
 
-    public uint Amount { get; set; }
+    public uint Amount { get => _amount; }
 
     public void AddAmount(uint amount)
     {
-        Amount += amount;
+        _amount += amount;
     }
 
     public void RemoveAmount(uint amount)
     {
-        if (Amount == 0)
+        if (_amount == 0)
         {
             throw new CatalogException($"There is no {Name} in stock");
         }
 
-        if (Amount < amount)
+        if (_amount < amount)
         {
             throw new CatalogException($"Not enough amount of product {Name} in stock");
         }
 
-        Amount -= amount;
+        _amount -= amount;
     }
 
     public bool IsEnoughAmount(uint amount)
     {
-        return Amount >= amount;
+        return _amount >= amount;
     }
 
 }

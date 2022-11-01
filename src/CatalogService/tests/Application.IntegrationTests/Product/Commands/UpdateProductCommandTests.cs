@@ -31,12 +31,13 @@ public class UpdateProductCommandTests : BaseTestFixture
         var id = await SendAsync(add);
         
         //act
-        var update = new UpdateProductCommand() { Name = updatedName, CatalogId = 1, Id = id };
+        var update = new UpdateProductCommand() { Name = updatedName, CatalogId = 1, Id = id, Amount = 10 };
         id = await SendAsync(update);
         
         //assert
         var product = await FindAsync<Domain.Entities.Product>(id);
         product.Should().NotBeNull();
         product.Name.Should().Be(updatedName);
+        product.Amount.Should().Be(10);
     }
 }

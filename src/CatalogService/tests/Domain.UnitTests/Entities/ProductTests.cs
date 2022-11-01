@@ -5,6 +5,7 @@ using CatalogService.Domain.UnitTests.Helpers;
 using FluentAssertions;
 using NUnit.Framework;
 
+
 namespace CatalogService.Domain.UnitTests.Entities
 {
     public class ProductTests
@@ -64,7 +65,7 @@ namespace CatalogService.Domain.UnitTests.Entities
         [Test]
         public void RemoveAmount_Success()
         {
-            var product = new Product(){Amount = 2};
+            var product = new Product(2);
             
             product.RemoveAmount(1);
             
@@ -84,7 +85,7 @@ namespace CatalogService.Domain.UnitTests.Entities
         [Test]
         public void RemoveAmount_ThrowExceptionAmountLessRemoving()
         {
-            var product = new Product() {Amount = 2};
+            var product = new Product(2);
             
             Action act = () => product.RemoveAmount(3);
 
@@ -94,7 +95,7 @@ namespace CatalogService.Domain.UnitTests.Entities
         [Test]
         public void CheckAmount_ShouldBeEnough()
         {
-            var product = new Product() {Amount = 2};
+            var product = new Product(3) ;
             
             var result = product.IsEnoughAmount(2);
 
@@ -104,7 +105,7 @@ namespace CatalogService.Domain.UnitTests.Entities
         [Test]
         public void CheckAmount_ShouldBeNotEnough()
         {
-            var product = new Product() {Amount = 2};
+            var product = new Product(2) ;
             
             var result = product.IsEnoughAmount(3);
 

@@ -17,7 +17,7 @@ public class UpdateProductCommand : IRequest<int>
 
     public decimal Price { get; set; }
 
-    public uint Amount { get; private set; }
+    public uint Amount { get; set; }
 }
 
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, int>
@@ -44,7 +44,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         product.Image = request.Image;
         product.CatalogId = request.CatalogId;
         product.Price = request.Price;
-        product.Amount = request.Amount;
+        product.AddAmount(request.Amount);
 
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 

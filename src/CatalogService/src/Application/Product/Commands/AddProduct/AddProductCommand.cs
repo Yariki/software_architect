@@ -15,7 +15,7 @@ public class AddProductCommand : IRequest<int>
 
     public decimal Price { get; set; }
 
-    public uint Amount { get; private set; }
+    public uint Amount { get; set; }
 }
 
 public class AddProductCommandHandler : IRequestHandler<AddProductCommand, int>
@@ -29,14 +29,13 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, int>
 
     public async Task<int> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
-        var product = new Domain.Entities.Product()
+        var product = new Domain.Entities.Product(request.Amount)
         {
             Name = request.Name,
             Description = request.Description,
             Image = request.Image,
             CatalogId = request.CatalogId,
-            Price = request.Price,
-            Amount = request.Amount
+            Price = request.Price
         };
 
         _applicationDbContext.Products.Add(product);
