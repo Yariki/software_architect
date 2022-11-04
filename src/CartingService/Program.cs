@@ -12,7 +12,7 @@ using CartingService.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
-
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +49,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
+CheckBusSettings(builder);
+
 var app = builder.Build();
 
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
@@ -74,4 +76,23 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { }
+public partial class Program 
+{ 
+
+    private static void CheckBusSettings(WebApplicationBuilder builder)
+    {
+
+        using var provider = builder
+            .Services
+            .BuildServiceProvider();
+
+        using (var scope = provider.CreateScope())
+        {
+            var options = scope.ServiceProvider.GetRequiredService<IOptions<AzureServiceBusListenConfiguration>>();
+            Console.WriteLine(options.Value.ConnectionString);
+        } 
+    }
+
+}
+
+
