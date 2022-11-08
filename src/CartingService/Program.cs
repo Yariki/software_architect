@@ -1,4 +1,7 @@
 using CartingService.Application.Interfaces;
+using CartingService.Infrastructure.Configuration;
+using CartingService.Infrastructure.Filters;
+using CartingService.Infrastructure.Persistance;
 
 using MediatR;
 
@@ -9,7 +12,7 @@ using CartingService.Infrastructure.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
-
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddSingleton<IApplicationDbContext, ApplicationDbContext>();
+builder.Services.AddSingleton<CartingService.Infrastructure.Persistance.IApplicationDbContext, ApplicationDbContext>();
+builder.Services.Configure<AzureServiceBusListenConfiguration>(builder.Configuration.GetSection("ServicecBus"));
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddControllers(opt => 
 {
@@ -45,6 +49,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
+CheckBusSettings(builder);
+
 var app = builder.Build();
 
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
@@ -70,4 +76,23 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { }
+public partial class Program 
+{ 
+
+    private static void CheckBusSettings(WebApplicationBuilder builder)
+    {
+
+        using var provider = builder
+            .Services
+            .BuildServiceProvider();
+
+        using (var scope = provider.CreateScope())
+        {
+            var options = scope.ServiceProvider.GetRequiredService<IOptions<AzureServiceBusListenConfiguration>>();
+            Console.WriteLine(options.Value.ConnectionString);
+        } 
+    }
+
+}
+
+

@@ -1,4 +1,5 @@
 ﻿using CatalogService.Application.Common.Interfaces;
+using CatalogService.Infrastructure.Configuration;
 using CatalogService.Infrastructure.Persistence;
 using CatalogService.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ public static class ConfigureServices
 
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddTransient<IDateTime, DateTimeService>();
+        services.Configure<AzureServiceBusProducerConfiguration>(configuration.GetSection("ServicecBus"));
 
         return services;
     }
