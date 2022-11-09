@@ -1,7 +1,7 @@
 ﻿using CatalogService.Application.Common.Interfaces;
-using CatalogService.Infrastructure.Configuration;
 using CatalogService.Infrastructure.Persistence;
 using CatalogService.Infrastructure.Services;
+using EventBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -19,7 +19,7 @@ public static class ConfigureServices
         else
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                options.UseSqlServer(configuration.GetConnectionString("ApplicationDatabase"),
                     builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         }
 
@@ -28,6 +28,8 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddTransient<IDateTime, DateTimeService>();
         services.Configure<AzureServiceBusProducerConfiguration>(configuration.GetSection("ServicecBus"));
+        services.AddScoped<IEventSender, EventSender>();
+        services.AddHostedService<ProducerService>();
 
         return services;
     }

@@ -35,4 +35,9 @@ public class CartRepository : ICartRepository
     {
         _dbSet?.Update(cart);
     }
+
+    public IEnumerable<Cart> GetCartWithProduct(int id) 
+    {
+        return _dbSet.Query().Where(c => c.Items.Any(i => i.Id == id)).ToList();
+    }
 }

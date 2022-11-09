@@ -1,5 +1,6 @@
 ﻿using CatalogService.Application.Common.Exceptions;
 using CatalogService.Application.Common.Interfaces;
+using CatalogService.Domain.Events;
 using MediatR;
 
 namespace CatalogService.Application.Product.Commands.UpdateProduct;
@@ -45,6 +46,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         product.CatalogId = request.CatalogId;
         product.Price = request.Price;
         product.AddAmount(request.Amount);
+        product.AddDomainEvent(new UpdatedProductEvent(product));
 
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
