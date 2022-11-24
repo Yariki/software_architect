@@ -7,6 +7,13 @@
     
     <UserSecretsId>a25f8e14-7507-4dbf-8023-9309c53c54ed</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Application\Exceptions\**" />
+    <Content Remove="Application\Exceptions\**" />
+    <EmbeddedResource Remove="Application\Exceptions\**" />
+    <None Remove="Application\Exceptions\**" />
+  </ItemGroup>
   
   
   <ItemGroup>
@@ -18,9 +25,15 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     
   </ItemGroup>
-
+  
+  
   <ItemGroup>
-    <Folder Include="Application\Exceptions\" />
+    <ProjectReference Include="..\BuildingBlocks\EventBus\EventBus.csproj" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <Folder Include="Application\MessageHandlers\Dtos\" />
   </ItemGroup>
 
 </Project>

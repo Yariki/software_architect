@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Options;
+using EventBus;
+using CartingService.Application.MessageHandlers;
+using CartingService.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +24,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<CartingService.Infrastructure.Persistance.IApplicationDbContext, ApplicationDbContext>();
-builder.Services.Configure<AzureServiceBusListenConfiguration>(builder.Configuration.GetSection("ServicecBus"));
+builder.Services.Configure<AzureServiceBusProducerConfiguration>(builder.Configuration.GetSection("ServicecBus"));
 builder.Services.AddTransient<ICartRepository, CartRepository>();
+builder.Services.AddTransient<IInboxRepository, InboxRepository>();
+builder.Services.AddTransient<IMessageHandler, UpdatedProductMessageHandler>();
+builder.Services.AddSingleton<IEventReceiver, EventReceiver>();
+builder.Services.AddHostedService<ReceiverHostedService>();
 builder.Services.AddControllers(opt => 
 {
     opt.Filters.Add<GlobalExceptionFilter>();

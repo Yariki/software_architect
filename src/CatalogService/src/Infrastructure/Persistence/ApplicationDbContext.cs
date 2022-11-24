@@ -1,8 +1,10 @@
-﻿using System.Reflection;
+﻿using System.Data;
+using System.Reflection;
 using CatalogService.Application.Common.Interfaces;
 using CatalogService.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CatalogService.Infrastructure.Persistence;
 
@@ -21,6 +23,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Catalog> Catalogs => Set<Catalog>();
 
     public DbSet<Product> Products => Set<Product>();
+    
+    public DbSet<Outbox> Outboxes => Set<Outbox>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -35,4 +39,10 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
         return await base.SaveChangesAsync(cancellationToken);
     }
+    
+    public IDbContextTransaction BeginTransaction()
+    {
+        return Database.BeginTransaction();
+    }
+
 }
