@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Catalog.Commands.UpdateCatalog;
 using Microsoft.Extensions.DependencyInjection.Catalog.Queries.GetCatalog;
 using Microsoft.Extensions.DependencyInjection.Catalog.Queries.GetCatalogList;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Catalog.Api.Controllers;
 
@@ -92,6 +93,13 @@ public class CatalogController : ApiControllerBase
         await Mediator.Send(new DeleteCatalogCommand() { Id = id });
 
         return NoContent();
+    }
+
+    [Authorize(Roles = "Admin1")]
+    [HttpGet("identity")]
+    public IActionResult Get()
+    {
+        return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
     }
 
     private void UpdateCatalogWithLinks(CatalogExtendedDto catalogExtendedDto, int id)

@@ -15,30 +15,22 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UserViewModel.Id" />
             <div class="form-group">
-                <label asp-for="UserViewModel.FirstName" class="control-label"></label>
-                <input asp-for="UserViewModel.FirstName" class="form-control" />
-                <span asp-validation-for="UserViewModel.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserViewModel.LastName" class="control-label"></label>
-                <input asp-for="UserViewModel.LastName" class="form-control" />
-                <span asp-validation-for="UserViewModel.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="UserViewModel.Username" class="control-label"></label>
-                <input asp-for="UserViewModel.Username" class="form-control" />
+                <input asp-for="UserViewModel.Username" class="form-control" readonly/>
                 <span asp-validation-for="UserViewModel.Username" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="UserViewModel.Email" class="control-label"></label>
-                <input asp-for="UserViewModel.Email" class="form-control" />
-                <span asp-validation-for="UserViewModel.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserViewModel.Password" class="control-label"></label>
-                <input asp-for="UserViewModel.Password" class="form-control" />
-                <span asp-validation-for="UserViewModel.Password" class="text-danger"></span>
-            </div>
+            @{
+
+                for(var i = 0; i < Model.UserViewModel.Roles.Count; i++)
+                {
+                    var role = Model.UserViewModel.Roles.ElementAt(i);
+                
+                    <div class="form-group">
+                        <input id="SelectedRoles" name="SelectedRoles" type="checkbox" checked="@role.Checked" value="@role.RoleName" /> @role.RoleName <br/>
+                    </div>
+                }    
+            }
+            
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

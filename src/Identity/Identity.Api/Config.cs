@@ -4,6 +4,20 @@ namespace Identity.Api;
 
 public static class Config
 {
+
+    public static IEnumerable<ApiResource> ApiResources = new List<ApiResource>()
+    {
+        new ApiResource("catalog", "Catalog Service")
+        {
+            Scopes = new string[]
+            {
+                "catalog.read",
+                "catalog.write",
+                "catalog.full_access"
+            }
+        }
+    };
+    
     public static IEnumerable<IdentityResource> IdentityResources =>
         new IdentityResource[]
         {
@@ -11,42 +25,30 @@ public static class Config
             new IdentityResources.Profile(),
         };
 
-    public static IEnumerable<ApiScope> ApiScopes =>
-        new ApiScope[]
-        {
-            new ApiScope("scope1"),
-            new ApiScope("scope2"),
-        };
-
+    public static IEnumerable<ApiScope> Scopes = new List<ApiScope>()
+    {
+        new ApiScope("catalog.read", "Read Access to Catalog API"),
+        new ApiScope("catalog.write", "Write Access to Catalog API"),
+        new ApiScope("catalog.full_access", "Full Access to Catalog API"),
+    };
+    
     public static IEnumerable<Client> Clients =>
         new Client[]
         {
-            // m2m client credentials flow client
-            new Client
-            {
-                ClientId = "m2m.client",
-                ClientName = "Client Credentials Client",
-
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-                ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
-
-                AllowedScopes = { "scope1" }
-            },
-
             // interactive client using code flow + pkce
             new Client
             {
-                ClientId = "interactive",
+                ClientId = "web",
                 ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
 
                 AllowedGrantTypes = GrantTypes.Code,
 
-                RedirectUris = { "https://localhost:44300/signin-oidc" },
-                FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
-                PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
+                RedirectUris = { "https://localhost:5002/signin-oidc" },
+               
+                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "scope2" }
+                AllowedScopes = { "openid", "profile", "catalog.full_access" }
             },
         };
 }

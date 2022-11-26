@@ -24,7 +24,11 @@ namespace Identity.Api.Pages.Users
         }
 
         [BindProperty]
-        public UserViewModel UserViewModel { get; set; }
+        public UserEditViewModel UserViewModel { get; set; }
+
+        [BindProperty]
+        public List<string> SelectedRoles { get; set; }
+        
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -40,8 +44,18 @@ namespace Identity.Api.Pages.Users
                 return NotFound();
             }
 
-            UserViewModel = UserViewModel.FromApplicationUser(user);
+            UserViewModel = UserEditViewModel.FromApplicationUser(user);
+            var roles = await _context.Roles.ToListAsync();
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            UserViewModel.Roles = roles.Select(role => new SelectItem
+            {
+                Id = role.Id,
+                RoleName = role.Name,
+                Checked = userRoles.Contains(role.Name)
+            }).ToList();
             
+
             return Page();
         }
 
@@ -54,8 +68,16 @@ namespace Identity.Api.Pages.Users
                 return Page();
             }
 
-            
+            var user = await _userManager.FindByIdAsync(UserViewModel.Id);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
+            foreach (var role in userRoles)
+            {
+                await _userManager.RemoveFromRoleAsync(user, role);
+            }
+
+            await _userManager.AddToRolesAsync(user, SelectedRoles);
+            
             return RedirectToPage("./Index");
         }
         
