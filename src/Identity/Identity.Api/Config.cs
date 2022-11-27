@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
+using Identity.Api.Permissions;
 
 namespace Identity.Api;
 
@@ -11,9 +12,7 @@ public static class Config
         {
             Scopes = new string[]
             {
-                "catalog.read",
-                "catalog.write",
-                "catalog.full_access"
+                "catalog"
             }
         }
     };
@@ -23,13 +22,17 @@ public static class Config
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
+            new IdentityResource()
+            {
+                Name = CatalogPermissions.Permissions,
+                DisplayName = CatalogPermissions.Permissions,
+                UserClaims = {CatalogPermissions.Permissions}
+            }
         };
 
     public static IEnumerable<ApiScope> Scopes = new List<ApiScope>()
     {
-        new ApiScope("catalog.read", "Read Access to Catalog API"),
-        new ApiScope("catalog.write", "Write Access to Catalog API"),
-        new ApiScope("catalog.full_access", "Full Access to Catalog API"),
+        new ApiScope("catalog")
     };
     
     public static IEnumerable<Client> Clients =>
@@ -48,7 +51,13 @@ public static class Config
                 PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "catalog.full_access" }
+                AllowedScopes = 
+                { 
+                    "openid", 
+                    "profile", 
+                    "catalog",
+                    CatalogPermissions.Permissions
+                }
             },
         };
 }

@@ -21,4 +21,10 @@
         <dt>@prop.Key</dt>
         <dd>@prop.Value</dd>
     }
+    <span>Claims</span>
+    @foreach (var prop in (await HttpContext.AuthenticateAsync()).Principal.Claims)
+    {
+        <dt>@prop.Type</dt>
+        <dd>@prop.Value</dd>
+    }
 </dl>

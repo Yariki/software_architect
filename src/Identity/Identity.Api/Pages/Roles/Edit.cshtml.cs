@@ -7,20 +7,37 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Identity.Api.Data;
+using Microsoft.AspNetCore.Identity;
+using Identity.Api.Models;
+using System.Data.Common;
+using Identity.Api.Permissions;
 
 namespace Identity.Api.Pages.Roles
 {
     public class EditModel : PageModel
     {
         private readonly Identity.Api.Data.ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EditModel(Identity.Api.Data.ApplicationDbContext context)
+        public EditModel(Identity.Api.Data.ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        private static IList<string> AllPermissions = new List<string>()
+            {
+                CatalogPermissions.CatalogRead,
+                CatalogPermissions.CatalogCreate,
+                CatalogPermissions.CatalogUpdate,
+                CatalogPermissions.CatalogDelete
+            };
+
         [BindProperty]
-        public RoleViewModel RoleViewModel { get; set; }
+        public RoleEditViewModel RoleViewModel { get; set; }
+
+        [BindProperty]
+        public List<string> Permissions { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -36,10 +53,18 @@ namespace Identity.Api.Pages.Roles
                 return NotFound();
             }
             
-            RoleViewModel = new RoleViewModel
+            var existPermissions = _context.RoleClaims.Where(x => x.RoleId == id).Select(x => x.ClaimValue).ToList();
+            
+            RoleViewModel = new RoleEditViewModel
             {
                 Id = role.Id,
-                RoleName = role.Name
+                RoleName = role.Name,
+                Permissions = AllPermissions.Select(permission => new Permission
+                {
+                    PermissionValue = permission,
+                    PermissionLabel = permission,
+                    Checked = existPermissions.Contains(permission)
+                }).ToList()
             };
 
             return Page();
@@ -54,12 +79,29 @@ namespace Identity.Api.Pages.Roles
                 return Page();
             }
 
-            var role = await _context.Roles.FirstOrDefaultAsync(m => m.Id == RoleViewModel.Id);
-            role.Name = RoleViewModel.RoleName;
-            role.NormalizedName = RoleViewModel.RoleName.ToUpper();
-
             try
             {
+
+                var role = await _context.Roles.FirstOrDefaultAsync(m => m.Id == RoleViewModel.Id);
+                role.Name = RoleViewModel.RoleName;
+                role.NormalizedName = RoleViewModel.RoleName.ToUpper();
+
+                var claims = _context.RoleClaims.Where(rc => rc.RoleId == RoleViewModel.Id);
+
+                _context.RoleClaims.RemoveRange(claims);
+
+                foreach (var permission in Permissions)
+                {
+                    var claim = new IdentityRoleClaim<string>
+                    {
+                        RoleId = RoleViewModel.Id,
+                        ClaimType = CatalogPermissions.Permissions,
+                        ClaimValue = permission
+                    };
+
+                    _context.RoleClaims.Add(claim);
+                }
+                
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

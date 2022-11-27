@@ -16,9 +16,22 @@
             <input type="hidden" asp-for="RoleViewModel.Id" />
             <div class="form-group">
                 <label asp-for="RoleViewModel.RoleName" class="control-label"></label>
-                <input asp-for="RoleViewModel.RoleName" class="form-control" />
+                <input asp-for="RoleViewModel.RoleName" class="form-control" readonly/>
                 <span asp-validation-for="RoleViewModel.RoleName" class="text-danger"></span>
             </div>
+
+            @{
+
+                for (var i = 0; i < Model.RoleViewModel.Permissions.Count; i++)
+                {
+                    var permission = Model.RoleViewModel.Permissions.ElementAt(i);
+
+                    <div class="form-group">
+                        <input id="Permissions" name="Permissions" type="checkbox" checked="@permission.Checked" value="@permission.PermissionValue" /> @permission.PermissionLabel <br />
+                    </div>
+                }
+            }
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

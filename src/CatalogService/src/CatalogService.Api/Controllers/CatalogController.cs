@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection.Catalog.Queries.GetCatalog;
 using Microsoft.Extensions.DependencyInjection.Catalog.Queries.GetCatalogList;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using Catalog.Api.Policy;
 
 namespace Catalog.Api.Controllers;
 
@@ -52,6 +53,7 @@ public class CatalogController : ApiControllerBase
     /// <param name="cmd">CreateCatalogCommand - Input parameters</param>
     /// <returns>int - id of created catalog</returns>
     [HttpPost(Name = nameof(CatalogController.CreateCatalog))]
+    [Authorize(Policy = Policies.FullAccess)]
     public async Task<ActionResult<int>> CreateCatalog([FromBody] CreateCatalogCommand cmd)
     {
         return Ok(await Mediator.Send(cmd));
@@ -67,6 +69,7 @@ public class CatalogController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
+    [Authorize(Policy = Policies.FullAccess)]
     public async Task<ActionResult> UpdateCatalog(int id, [FromBody] UpdateCatalogCommand command)
     {
         if (id != command.Id)
@@ -88,6 +91,7 @@ public class CatalogController : ApiControllerBase
     [HttpDelete("{id}", Name = nameof(CatalogController.DeleteCatalog))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
+    [Authorize(Policy = Policies.FullAccess)]
     public async Task<ActionResult> DeleteCatalog(int id)
     {
         await Mediator.Send(new DeleteCatalogCommand() { Id = id });
@@ -95,7 +99,7 @@ public class CatalogController : ApiControllerBase
         return NoContent();
     }
 
-    [Authorize(Roles = "Admin1")]
+    [Authorize(Policy = Policies.FullAccess)]
     [HttpGet("identity")]
     public IActionResult Get()
     {

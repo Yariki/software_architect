@@ -13,14 +13,22 @@ namespace MyApp.Namespace
         public async Task OnGet()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var content = await client.GetStringAsync("https://localhost:7265/api/Catalog/identity");
+            try
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var content = await client.GetStringAsync("https://localhost:7265/api/Catalog/identity");
 
-            var parsed = JsonDocument.Parse(content);
-            var formatted = JsonSerializer.Serialize(parsed, new JsonSerializerOptions { WriteIndented = true });
+                var parsed = JsonDocument.Parse(content);
+                var formatted = JsonSerializer.Serialize(parsed, new JsonSerializerOptions { WriteIndented = true });
 
-            Json = formatted;
+                Json = formatted;
+            }
+            catch (Exception ex)
+            {
+                Json = ex.ToString();
+            }
+            
         }
     }
 }
