@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using System.Text.Json;
 using Azure.Messaging.ServiceBus;
+using Microsoft.Extensions.Options;
 
 namespace EventBus;
 
@@ -10,9 +11,9 @@ public class EventSender : IEventSender
     private readonly ServiceBusClient _serviceBusClient;
     private readonly ServiceBusSender _serviceBusSender;
     
-    public EventSender(AzureServiceBusProducerConfiguration configuration)
+    public EventSender(IOptions<AzureServiceBusProducerConfiguration> configuration)
     {
-        _configuration = configuration;
+        _configuration = configuration.Value;
         _serviceBusClient = new ServiceBusClient(_configuration.ConnectionString);
         _serviceBusSender = _serviceBusClient.CreateSender(_configuration.Queue);
     }
