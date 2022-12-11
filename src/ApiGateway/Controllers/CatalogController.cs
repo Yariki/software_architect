@@ -23,6 +23,8 @@ public class CatalogController : ControllerBase
     public async Task<CatalogDto> GetProperties(int id)
     {
         var dictionary = await _catalogService.GetCatalogProperties(id);
+        
+        _logger.LogInformation($"Get properties for catalog {id}");
 
         return MapToCatalogDto(dictionary);
     }

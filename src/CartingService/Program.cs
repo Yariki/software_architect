@@ -15,21 +15,26 @@ using Microsoft.Extensions.Options;
 using EventBus;
 using CartingService.Application.MessageHandlers;
 using CartingService.Infrastructure.Services;
-
+using Logging.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSerialLogging(builder.Configuration);
+
+Log.Information("Starting Cart API...");
 
 // Add services to the container.
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<CartingService.Infrastructure.Persistance.IApplicationDbContext, ApplicationDbContext>();
-builder.Services.Configure<AzureServiceBusProducerConfiguration>(builder.Configuration.GetSection("ServicecBus"));
+//builder.Services.Configure<AzureServiceBusProducerConfiguration>(builder.Configuration.GetSection("ServicecBus"));
 builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<IInboxRepository, InboxRepository>();
 builder.Services.AddTransient<IMessageHandler, UpdatedProductMessageHandler>();
 builder.Services.AddSingleton<IEventReceiver, EventReceiver>();
-builder.Services.AddHostedService<ReceiverHostedService>();
+//builder.Services.AddHostedService<ReceiverHostedService>();
 builder.Services.AddControllers(opt => 
 {
     opt.Filters.Add<GlobalExceptionFilter>();
@@ -76,6 +81,11 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
+
+app.UseElasticApm(builder.Configuration);
+
+app.UseCorrelationIdMiddleware();
+app.UseApmMiddleware();
 
 app.UseHttpsRedirection();
 

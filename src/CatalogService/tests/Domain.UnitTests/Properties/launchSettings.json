@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Catalog.Domain.UnitTests": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:60216;http://localhost:60217"
+    }
+  }
+}

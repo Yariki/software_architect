@@ -1,10 +1,17 @@
 using ApiGateway.Infrastructure.Services;
+using Elastic.Apm.AspNetCore;
+using Logging.Extensions;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Values;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSerialLogging(builder.Configuration);
+    
+Log.Information("Starting API Gateway...");
 
 builder.Configuration.AddJsonFile("ocelot.json");
 
@@ -39,6 +46,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseElasticApm(builder.Configuration);
+
+app.UseCorrelationIdMiddleware();
+app.UseApmMiddleware();
 
 app.UseHttpsRedirection();
 

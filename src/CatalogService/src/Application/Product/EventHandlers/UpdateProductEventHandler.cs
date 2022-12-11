@@ -3,6 +3,7 @@ using CatalogService.Application.Common.Interfaces;
 using CatalogService.Domain.Entities;
 using CatalogService.Domain.Events;
 using EventBus;
+using Logging.Services;
 using MediatR;
 
 namespace Microsoft.Extensions.DependencyInjection.Product.EventHandlers;
@@ -11,10 +12,12 @@ public class UpdateProductEventHandler : INotificationHandler<UpdatedProductEven
 {
 
     private readonly IApplicationDbContext _applicationDbContext;
-    
-    public UpdateProductEventHandler(IApplicationDbContext applicationDbContext)
+    private readonly ICorrelationIdGenerator _correlationIdGenerator;
+
+    public UpdateProductEventHandler(IApplicationDbContext applicationDbContext, ICorrelationIdGenerator correlationIdGenerator)
     {
         _applicationDbContext = applicationDbContext;
+        _correlationIdGenerator = correlationIdGenerator;
     }
     
     public Task Handle(UpdatedProductEvent notification, CancellationToken cancellationToken)
@@ -24,7 +27,7 @@ public class UpdateProductEventHandler : INotificationHandler<UpdatedProductEven
             Payload = JsonSerializer.Serialize(notification.Product),
             EventName = EventNames.ProductUpdatedEvent,
             Status = OutBoxStatus.New,
-            CorrelationId = Guid.NewGuid(),
+            CorrelationId = Guid.Parse(_correlationIdGenerator.CorrelationId),
             EventId = Guid.NewGuid(),
             CreateDate = DateTime.UtcNow
         };
