@@ -9,14 +9,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Catalog.Api.Policy;
 using Microsoft.Extensions.DependencyInjection.Catalog.Queries.GetCatalogProperties;
+using CatalogService.Domain.Entities;
+using Newtonsoft.Json;
 
 namespace Catalog.Api.Controllers;
 
 
 public class CatalogController : ApiControllerBase
 {
-    public CatalogController()
+    private readonly ILogger<CatalogController> _logger;
+
+    public CatalogController(ILogger<CatalogController> logger)
     {
+        _logger = logger;
     }
 
     /// <summary>
@@ -31,6 +36,8 @@ public class CatalogController : ApiControllerBase
         var entitiesCollection = new EntitiesCollection<CatalogDto>(catalogs);
         
         UpdateCatalogCollectionWithLinks(entitiesCollection);
+
+        _logger.LogInformation($"Get Catalog Items: {catalogs.Count()}");
         
         return Ok(entitiesCollection);
     }
@@ -44,7 +51,9 @@ public class CatalogController : ApiControllerBase
     public async Task<ActionResult<CatalogDto>> GetCatalog(int id)
     {
         var catalog = await Mediator.Send(new GetCatalogQuery { CatalogId = id });
-        
+
+        _logger.LogInformation($"Get Catalog: {JsonConvert.SerializeObject(catalog)}");
+
         return Ok(catalog);
     }
 

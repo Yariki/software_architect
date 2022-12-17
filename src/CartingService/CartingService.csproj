@@ -29,6 +29,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\BuildingBlocks\EventBus\EventBus.csproj" />
+    <ProjectReference Include="..\BuildingBlocks\Logging\Logging.csproj" />
   </ItemGroup>
   
   

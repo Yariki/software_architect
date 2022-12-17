@@ -27,9 +27,9 @@ public static class ConfigureServices
 
         services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddTransient<IDateTime, DateTimeService>();
-        services.Configure<AzureServiceBusProducerConfiguration>(configuration.GetSection("ServiceBus"));
-        services.AddScoped<IEventSender, EventSender>();
-        services.AddHostedService<ProducerService>();
+        //services.Configure<AzureServiceBusProducerConfiguration>(configuration.GetSection("ServiceBus"));
+        //services.AddScoped<IEventSender, EventSender>();
+        //services.AddHostedService<ProducerService>();
 
         return services;
     }

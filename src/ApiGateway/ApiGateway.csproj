@@ -17,4 +17,8 @@
     <Folder Include="Infrastructure\Configs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks\Logging\Logging.csproj" />
+  </ItemGroup>
+
 </Project>

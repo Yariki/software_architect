@@ -2,6 +2,8 @@
 using System.Text.Json;
 using CartingService.Application.Interfaces;
 using EventBus;
+using Logging;
+using Serilog.Context;
 
 namespace CartingService.Application.MessageHandlers;
 
@@ -24,6 +26,8 @@ public class UpdatedProductMessageHandler : IMessageHandler
 
     public Task<bool> HandleAsync(Message message)
     {
+        using var property = LogContext.PushProperty(LoggingConsts.CorrelationIdProperty, message.CorrelationId);
+
         var result = false;
         try
         {

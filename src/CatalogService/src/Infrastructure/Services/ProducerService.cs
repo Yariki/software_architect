@@ -94,7 +94,7 @@ public class ProducerService : IHostedService
             SendResult.Acknowledged => OutBoxStatus.Pushed,
             SendResult.RecoverableFailure => OutBoxStatus.New,
             SendResult.NoneRecoverableFailure => OutBoxStatus.Failed,
-            _ => throw new ArgumentOutOfRangeException(nameof(result), result, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(result), result, message: null)
         };
         outbox.PublishedDate = DateTime.UtcNow;
         return UpdateOutboxStatusAsync(outbox, newStatus, outboxRepo);

@@ -1,6 +1,13 @@
 using Catalog.Api.Extensions;
+using Logging.Extensions;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSerialLogging(builder.Configuration);
+
+Log.Information("Starting Catalog API...");
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
@@ -21,6 +28,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseElasticApm(builder.Configuration);
+
+app.UseCorrelationIdMiddleware();
+app.UseApmMiddleware();
 
 app.UseHttpsRedirection();
 
