@@ -2,6 +2,7 @@
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace EventBus;
 
@@ -13,10 +14,10 @@ public class EventReceiver : IEventReceiver
     private readonly ServiceBusClient _serviceBusClient;
     private readonly ServiceBusProcessor _serviceBusProcessor;
     
-    public EventReceiver(AzureServiceBusProducerConfiguration configuration, 
+    public EventReceiver(IOptions<AzureServiceBusProducerConfiguration> configuration, 
         IServiceScopeFactory scopeFactory, ILogger<EventReceiver> logger)
     {
-        _configuration = configuration;
+        _configuration = configuration.Value;
         _scopeFactory = scopeFactory;
         _logger = logger;
         _serviceBusClient = new ServiceBusClient(_configuration.ConnectionString);

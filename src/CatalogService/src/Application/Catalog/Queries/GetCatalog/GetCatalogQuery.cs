@@ -23,7 +23,9 @@ public class GetCatelogQueryHandler : IRequestHandler<GetCatalogQuery, CatalogEx
 
     public async Task<CatalogExtendedDto> Handle(GetCatalogQuery request, CancellationToken cancellationToken)
     {
-        var catalog = await _applicationDbContext.Catalogs.FindAsync(request.CatalogId);
+        var catalog = await _applicationDbContext
+            .Catalogs
+            .FindAsync(request.CatalogId);
 
         return _mapper.Map<CatalogExtendedDto>(catalog);
     }

@@ -1,5 +1,4 @@
 using CartingService.Application.Interfaces;
-using CartingService.Infrastructure.Configuration;
 using CartingService.Infrastructure.Filters;
 using CartingService.Infrastructure.Persistance;
 
@@ -16,6 +15,7 @@ using Microsoft.Extensions.Options;
 using EventBus;
 using CartingService.Application.MessageHandlers;
 using CartingService.Infrastructure.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,7 +95,7 @@ public partial class Program
 
         using (var scope = provider.CreateScope())
         {
-            var options = scope.ServiceProvider.GetRequiredService<IOptions<AzureServiceBusListenConfiguration>>();
+            var options = scope.ServiceProvider.GetRequiredService<IOptions<AzureServiceBusProducerConfiguration>>();
             Console.WriteLine(options.Value.ConnectionString);
         } 
     }

@@ -1,0 +1,127 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/cart/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/v2/cart/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/cart/add",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/v2/cart/add",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/cart/remove",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "DownstreamPathTemplate": "/api/v2/cart/remove",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ]
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/catalog",
+      "UpstreamHttpMethod": [ "GET"],
+      "DownstreamPathTemplate": "/api/catalog",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7265
+        }
+      ],
+      "FileCacheOptions": { "TtlSeconds": 60 }
+    },
+    {
+      "UpstreamPathTemplate": "/api/catalog",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/catalog",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7265
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthTest",
+        "AllowedScopes": [ "openid", "profile", "permissions" ]
+      }
+    },
+
+    {
+      "UpstreamPathTemplate": "/api/catalog/{id}",
+      "UpstreamHttpMethod": [ "GET"],
+      "DownstreamPathTemplate": "/api/catalog/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7265
+        }
+      ],
+      "FileCacheOptions": { "TtlSeconds": 60 }
+    },
+    {
+      "UpstreamPathTemplate": "/api/catalog/{id}",
+      "UpstreamHttpMethod": [ "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/catalog/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7265
+        }
+      ],
+      "AuthenticationOptions": {
+          "AuthenticationProviderKey": "AuthTest",
+        "AllowedScopes": [ "openid", "profile", "permissions" ]
+        }
+      },
+      {
+        "UpstreamPathTemplate": "/api/product",
+        "UpstreamHttpMethod": [ "GET", "POST" ],
+        "DownstreamPathTemplate": "/api/product",
+        "DownstreamScheme": "https",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 7265
+          }
+        ]
+      },
+      {
+        "UpstreamPathTemplate": "/api/product/{id}",
+        "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
+        "DownstreamPathTemplate": "/api/product/{id}",
+        "DownstreamScheme": "https",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 7265
+          }
+        ]
+      }
+  ],
+  "GlobalConfiguration": {
+      "BaseUrl": "https://localhost:7086"
+  }
+}

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection.Catalog.Queries.GetCatalogList;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Catalog.Api.Policy;
+using Microsoft.Extensions.DependencyInjection.Catalog.Queries.GetCatalogProperties;
 
 namespace Catalog.Api.Controllers;
 
@@ -35,7 +36,7 @@ public class CatalogController : ApiControllerBase
     }
     
     /// <summary>
-    /// get list of catalogs
+    /// get catalog
     /// </summary>
     /// <returns>IEnumerable<CatalogDto></returns>
     [HttpGet("{id}", Name = nameof(CatalogController.GetCatalog))]
@@ -46,7 +47,20 @@ public class CatalogController : ApiControllerBase
         
         return Ok(catalog);
     }
-    
+
+    /// <summary>
+    /// get the dictionary of catalog properties
+    /// </summary>
+    /// <returns>Dictionary</returns>
+    [HttpGet("properties/{id}", Name = nameof(CatalogController.GetCatalogProperties))]
+    [Produces("application/json")]
+    public async Task<ActionResult<Dictionary<string,string>>> GetCatalogProperties(int id)
+    {
+        var catalog = await Mediator.Send(new GetCatalogPropertiesQuery { CatalogId = id });
+
+        return Ok(catalog);
+    }
+
     /// <summary>
     /// Create the catalog
     /// </summary>
