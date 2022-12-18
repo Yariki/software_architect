@@ -1,4 +1,5 @@
-﻿using CatalogService.Application.Common.Interfaces;
+﻿using Catalog.Abstractions;
+using CatalogService.Application.Common.Interfaces;
 using MediatR;
 
 namespace CatalogService.Application.Product.Commands.AddProduct;

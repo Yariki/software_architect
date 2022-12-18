@@ -1,5 +1,8 @@
-﻿using CatalogService.Application.Common.Interfaces;
+﻿using Catalog.Abstractions;
+using CatalogService.Application.Common.Interfaces;
 using CatalogService.Infrastructure.Persistence;
+using HotChocolate;
+using HotChocolate.Execution;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +35,12 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "CatalogServiceDb"));
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
+            services.AddSingleton(sp => new RequestExecutorProxy(
+                sp.GetRequiredService<IRequestExecutorResolver>(),
+                Schema.DefaultName
+            ));
+
         });
     }
 }

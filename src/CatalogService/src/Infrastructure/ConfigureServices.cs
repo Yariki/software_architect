@@ -1,4 +1,5 @@
-﻿using CatalogService.Application.Common.Interfaces;
+﻿using Catalog.Abstractions;
+using CatalogService.Application.Common.Interfaces;
 using CatalogService.Infrastructure.Persistence;
 using CatalogService.Infrastructure.Services;
 using EventBus;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Catalog.Abstractions;
 using CatalogService.Application.Common.Exceptions;
 using CatalogService.Application.Common.Interfaces;
 using MediatR;

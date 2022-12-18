@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CatalogService.Infrastructure.Persistence.Configurations;
-public class CatalogConfiguration : IEntityTypeConfiguration<Catalog>
+public class CatalogConfiguration : IEntityTypeConfiguration<Domain.Entities.Catalog>
 {
-    public void Configure(EntityTypeBuilder<Catalog> builder)
+    public void Configure(EntityTypeBuilder<Domain.Entities.Catalog> builder)
     {
         builder.Property(e => e.Name)
             .IsRequired()

@@ -1,6 +1,5 @@
-﻿using System.Data;
-using System.Reflection;
-using CatalogService.Application.Common.Interfaces;
+﻿using System.Reflection;
+using Catalog.Abstractions;
 using CatalogService.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         _mediator = mediator;
     }
 
-    public DbSet<Catalog> Catalogs => Set<Catalog>();
+    public DbSet<Domain.Entities.Catalog> Catalogs => Set<Domain.Entities.Catalog>();
 
     public DbSet<Product> Products => Set<Product>();
     

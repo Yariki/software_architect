@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Catalog.Abstractions;
 using CatalogService.Application.Common.Interfaces;
 using CatalogService.Application.Common.Models;
 using MediatR;

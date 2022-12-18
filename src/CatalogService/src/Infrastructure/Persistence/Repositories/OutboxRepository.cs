@@ -1,4 +1,5 @@
-﻿using CatalogService.Application.Common.Interfaces;
+﻿using Catalog.Abstractions;
+using CatalogService.Application.Common.Interfaces;
 using CatalogService.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;

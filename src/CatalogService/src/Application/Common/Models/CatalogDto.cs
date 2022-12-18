@@ -4,7 +4,7 @@ using CatalogService.Domain.Exceptions;
 
 namespace CatalogService.Application.Common.Models;
 
-public class CatalogDto : IMapFrom<Catalog>
+public class CatalogDto : IMapFrom<Domain.Entities.Catalog>
 {
     public int Id { get; set; }
     

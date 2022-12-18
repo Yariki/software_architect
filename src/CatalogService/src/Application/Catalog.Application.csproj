@@ -18,6 +18,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.csproj" />
         <ProjectReference Include="..\..\..\BuildingBlocks\Logging\Logging.csproj" />
+        <ProjectReference Include="..\..\..\Catalog.Abstractions\Catalog.Abstractions.csproj" />
         <ProjectReference Include="..\Domain\Catalog.Domain.csproj" />
     </ItemGroup>
 

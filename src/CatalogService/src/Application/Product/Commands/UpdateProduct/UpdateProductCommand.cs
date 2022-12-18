@@ -1,4 +1,5 @@
-﻿using CatalogService.Application.Common.Exceptions;
+﻿using Catalog.Abstractions;
+using CatalogService.Application.Common.Exceptions;
 using CatalogService.Application.Common.Interfaces;
 using CatalogService.Domain.Events;
 using MediatR;

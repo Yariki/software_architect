@@ -1,4 +1,5 @@
 using Catalog.Api.Extensions;
+using Catalog.GraphQL;
 using Logging.Extensions;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Serilog;
@@ -19,6 +20,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddIdentity();
+builder.Services.AddGraphQlFunctionality();
 
 var app = builder.Build();
 
@@ -40,6 +42,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGraphQL();
 
 app.Run();
 
