@@ -1,10 +1,12 @@
-﻿using Catalog.Abstractions;
+﻿using AutoMapper;
+using Catalog.Abstractions;
 using CatalogService.Application.Common.Interfaces;
+using CatalogService.Application.Common.Models;
 using MediatR;
 
 namespace CatalogService.Application.Product.Commands.AddProduct;
 
-public class AddProductCommand : IRequest<int>
+public class AddProductCommand : IRequest<ProductDto>
 {
     public string Name { get; set; }
 
@@ -19,16 +21,19 @@ public class AddProductCommand : IRequest<int>
     public uint Amount { get; set; }
 }
 
-public class AddProductCommandHandler : IRequestHandler<AddProductCommand, int>
+public class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
 {
     private readonly IApplicationDbContext _applicationDbContext;
+    private readonly IMapper _mapper;
 
-    public AddProductCommandHandler(IApplicationDbContext applicationDbContext)
+    public AddProductCommandHandler(IApplicationDbContext applicationDbContext,
+        IMapper mapper)
     {
         _applicationDbContext = applicationDbContext;
+        _mapper = mapper;
     }
 
-    public async Task<int> Handle(AddProductCommand request, CancellationToken cancellationToken)
+    public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
         var product = new Domain.Entities.Product(request.Amount)
         {
@@ -42,6 +47,6 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, int>
         _applicationDbContext.Products.Add(product);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
-        return product.Id;
+        return _mapper.Map<ProductDto>(product);
     }
 }

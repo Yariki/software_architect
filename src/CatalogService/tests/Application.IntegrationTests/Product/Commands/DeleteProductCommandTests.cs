@@ -27,13 +27,13 @@ public class DeleteProductCommandTests : BaseTestFixture
     public async Task ShouldDeleteProduct()
     {
         var add = new AddProductCommand() { Name = "Product", CatalogId = 1, Price = 10 };
-        var id = await SendAsync(add);
+        var productDto = await SendAsync(add);
 
 
-        var delete = new DeleteProductCommand() { Id = id };
+        var delete = new DeleteProductCommand() { Id = productDto.Id };
         await SendAsync(delete);
 
-        var product = await FindAsync<Domain.Entities.Product>(id);
+        var product = await FindAsync<Domain.Entities.Product>(productDto.Id);
         product.Should().BeNull();
     }
 }

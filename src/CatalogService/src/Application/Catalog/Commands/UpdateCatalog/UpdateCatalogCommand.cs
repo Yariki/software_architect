@@ -2,11 +2,12 @@
 using Catalog.Abstractions;
 using CatalogService.Application.Common.Exceptions;
 using CatalogService.Application.Common.Interfaces;
+using CatalogService.Application.Common.Models;
 using MediatR;
 
 namespace Microsoft.Extensions.DependencyInjection.Catalog.Commands.UpdateCatalog;
 
-public class UpdateCatalogCommand : IRequest<int>
+public class UpdateCatalogCommand : IRequest<CatalogDto>
 {
     public int Id { get; set; }
 
@@ -18,7 +19,7 @@ public class UpdateCatalogCommand : IRequest<int>
 }
 
 
-public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand, int>
+public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand, CatalogDto>
 {
     private IApplicationDbContext _applicationDbContext;
     private IMapper _mapper;
@@ -29,7 +30,7 @@ public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand,
         _mapper = mapper;
     }
 
-    public async Task<int> Handle(UpdateCatalogCommand request, CancellationToken cancellationToken)
+    public async Task<CatalogDto> Handle(UpdateCatalogCommand request, CancellationToken cancellationToken)
     {
         var catalog = _applicationDbContext.Catalogs.Find(request.Id);
 
@@ -44,6 +45,6 @@ public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand,
 
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
-        return catalog.Id;
+        return _mapper.Map<CatalogDto>(catalog);
     }
 }

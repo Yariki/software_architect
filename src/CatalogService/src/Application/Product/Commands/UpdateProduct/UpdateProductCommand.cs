@@ -1,11 +1,13 @@
-﻿using Catalog.Abstractions;
+﻿using AutoMapper;
+using Catalog.Abstractions;
 using CatalogService.Application.Common.Exceptions;
 using CatalogService.Application.Common.Interfaces;
+using CatalogService.Application.Common.Models;
 using CatalogService.Domain.Events;
 using MediatR;
 
 namespace CatalogService.Application.Product.Commands.UpdateProduct;
-public class UpdateProductCommand : IRequest<int>
+public class UpdateProductCommand : IRequest<ProductDto>
 {
     public int Id { get; set; }
 
@@ -22,16 +24,19 @@ public class UpdateProductCommand : IRequest<int>
     public uint Amount { get; set; }
 }
 
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, int>
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto>
 {
     private readonly IApplicationDbContext _applicationDbContext;
+    private readonly IMapper _mapper;
 
-    public UpdateProductCommandHandler(IApplicationDbContext applicationDbContext)
+    public UpdateProductCommandHandler(IApplicationDbContext applicationDbContext,
+        IMapper mapper)
     {
         _applicationDbContext = applicationDbContext;
+        _mapper = mapper;
     }
 
-    public async Task<int> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task<ProductDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _applicationDbContext.Products.FindAsync(request.Id);
 
@@ -51,6 +56,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
-        return product.Id;
+        return _mapper.Map<ProductDto>(product);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Catalog.Abstractions;
-using Catalog.GraphQL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.GraphQL.Catalog;
@@ -10,13 +9,13 @@ public class CatalogQueryType
     [UsePaging]
     [UseProjection]
     [UseFiltering]
-    public Task<List<CatalogDto>> GetCatalogs([Service] IApplicationDbContext context) =>
-        context.Catalogs.Select(c => CatalogDto.FromCatalog(c)).ToListAsync();
+    public async Task<IQueryable<CatalogService.Domain.Entities.Catalog>> GetCatalogs([Service] IApplicationDbContext context) =>
+        context.Catalogs;
 
-    public async Task<CatalogDto> GetCatalog(int id,
+    public async Task<CatalogService.Domain.Entities.Catalog?> GetCatalog(int id,
         [Service] IApplicationDbContext context) 
     {
         var catalog = await context.Catalogs.SingleOrDefaultAsync(c => c.Id == id);
-        return CatalogDto.FromCatalog(catalog);
+        return catalog;
     }
 }

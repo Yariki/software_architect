@@ -28,14 +28,14 @@ public class UpdateProductCommandTests : BaseTestFixture
         
         //arrange
         var add = new AddProductCommand() { Name = "Product", CatalogId = 1 };
-        var id = await SendAsync(add);
+        var productDto = await SendAsync(add);
         
         //act
-        var update = new UpdateProductCommand() { Name = updatedName, CatalogId = 1, Id = id, Amount = 10 };
-        id = await SendAsync(update);
+        var update = new UpdateProductCommand() { Name = updatedName, CatalogId = 1, Id = productDto.Id, Amount = 10 };
+        productDto = await SendAsync(update);
         
         //assert
-        var product = await FindAsync<Domain.Entities.Product>(id);
+        var product = await FindAsync<Domain.Entities.Product>(productDto.Id);
         product.Should().NotBeNull();
         product.Name.Should().Be(updatedName);
         product.Amount.Should().Be(10);

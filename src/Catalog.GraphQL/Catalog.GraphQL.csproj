@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ApiGateway\ApiGateway.csproj" />
       <ProjectReference Include="..\CatalogService\src\Domain\Catalog.Domain.csproj" />
       <ProjectReference Include="..\CatalogService\src\Infrastructure\Catalog.Infrastructure.csproj" />
     </ItemGroup>

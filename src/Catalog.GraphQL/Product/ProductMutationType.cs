@@ -1,63 +1,31 @@
-﻿using Catalog.Abstractions;
-using Catalog.GraphQL.Models;
+﻿using AutoMapper;
+using Catalog.Abstractions;
+using CatalogService.Application.Common.Models;
+using CatalogService.Application.Product.Commands.AddProduct;
+using CatalogService.Application.Product.Commands.DeleteProduct;
+using CatalogService.Application.Product.Commands.UpdateProduct;
+using MediatR;
 
 namespace Catalog.GraphQL.Product;
 
 [ExtendObjectType("Mutation")]
 public class ProductMutationType
 {
-    
-    public async Task<ProductDto> AddProductAsync(ProductDto productDto,
-        [Service] IApplicationDbContext context,
-        CancellationToken cancellationToken)
-    {
-        var product = ProductDto.FromProductDto(productDto);
 
-        context.Products.Add(product);
-        await context.SaveChangesAsync(cancellationToken);
-        
-        return ProductDto.FromProduct(product);
-    }
+    public async Task<ProductDto> AddProductAsync(AddProductCommand addProductCommand,
+        [Service] IMediator mediator,
+        CancellationToken cancellationToken) =>
+        await mediator.Send(addProductCommand);
 
-    public async Task<ProductDto> UpdateProductAsync(ProductDto productDto,
-        [Service] IApplicationDbContext context,
-        CancellationToken cancellationToken)
-    {
-        var product = context.Products.FirstOrDefault(x => x.Id == productDto.Id);
+    public async Task<ProductDto> UpdateProductAsync(
+        UpdateProductCommand updateProductCommand,
+        [Service] IMediator mediator,
+        CancellationToken cancellationToken) =>
+        await mediator.Send(updateProductCommand);
 
-        if (product == null)
-        {
-            throw new Exception("Product not found");
-        }
-
-        product.Name = productDto.Name;
-        product.Description = productDto.Description;
-        product.Price = productDto.Price;
-        product.AddAmount(productDto.Amount);
-
-        context.Products.Update(product);
-        await context.SaveChangesAsync(cancellationToken);
-
-        return ProductDto.FromProduct(product);
-    }
-
-    public async Task<bool> DeleteProduct(int id,
-        [Service] IApplicationDbContext context,
-        CancellationToken cancellationToken)
-    {
-        var product = context.Products.FirstOrDefault(x => x.Id == id);
-
-        if (product == null)
-        {
-            return false;
-        }
-
-        context.Products.Remove(product);
-        await context.SaveChangesAsync(cancellationToken);
-
-        return true;
-    }
-
-
+    public async Task<int> DeleteProduct(int id,
+        [Service] IMediator mediator,
+        CancellationToken cancellationToken) =>
+        await mediator.Send(new DeleteProductCommand { Id = id });
 
 }
