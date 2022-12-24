@@ -4,13 +4,8 @@ namespace CatalogService.Domain.Entities;
 public class Product : BaseEntity
 {
     private uint _amount;
-    
-    private Product(){}
 
-    public Product(uint amount = 0)
-    {
-        _amount = amount;
-    }
+    public Product(uint amount = 0) => _amount = amount;
 
     public string Name { get; set; }
 
@@ -25,12 +20,12 @@ public class Product : BaseEntity
     public decimal Price { get; set; }
 
     public uint Amount { get => _amount; }
-    
+
     public void AddAmount(uint amount)
     {
         _amount += amount;
     }
-    
+
     public void RemoveAmount(uint amount)
     {
         if (_amount == 0)
