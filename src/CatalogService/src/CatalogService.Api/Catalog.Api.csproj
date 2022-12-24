@@ -8,6 +8,12 @@
     <UserSecretsId>5e78db56-d7bd-4017-a102-e7741bd27e0e</UserSecretsId>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AnalysisLevel>latest</AnalysisLevel>
+	</PropertyGroup>
+
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'CatalogService.Api' " />
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">

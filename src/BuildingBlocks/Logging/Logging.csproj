@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AnalysisLevel>latest</AnalysisLevel>
+	</PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Elastic.Apm.SerilogEnricher" Version="1.5.3" />
         <PackageReference Include="Elastic.CommonSchema.Serilog" Version="1.5.3" />
