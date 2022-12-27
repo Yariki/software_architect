@@ -7,7 +7,7 @@ using CatalogService.Domain.Events;
 using MediatR;
 
 namespace CatalogService.Application.Product.Commands.UpdateProduct;
-public class UpdateProductCommand : IRequest<ProductDto>
+public class UpdateProductCommand : IRequest<int>
 {
     public int Id { get; set; }
 
@@ -24,7 +24,7 @@ public class UpdateProductCommand : IRequest<ProductDto>
     public uint Amount { get; set; }
 }
 
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto>
+public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, int>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -36,7 +36,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         _mapper = mapper;
     }
 
-    public async Task<ProductDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var product = await _applicationDbContext.Products.FindAsync(request.Id);
 
@@ -56,6 +56,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
 
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<ProductDto>(product);
+        return product.Id;
     }
 }

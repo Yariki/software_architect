@@ -6,7 +6,7 @@ using MediatR;
 
 namespace CatalogService.Application.Product.Commands.AddProduct;
 
-public class AddProductCommand : IRequest<ProductDto>
+public class AddProductCommand : IRequest<int>
 {
     public string Name { get; set; }
 
@@ -21,7 +21,7 @@ public class AddProductCommand : IRequest<ProductDto>
     public uint Amount { get; set; }
 }
 
-public class AddProductCommandHandler : IRequestHandler<AddProductCommand, ProductDto>
+public class AddProductCommandHandler : IRequestHandler<AddProductCommand, int>
 {
     private readonly IApplicationDbContext _applicationDbContext;
     private readonly IMapper _mapper;
@@ -33,7 +33,7 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
         _mapper = mapper;
     }
 
-    public async Task<ProductDto> Handle(AddProductCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(AddProductCommand request, CancellationToken cancellationToken)
     {
         var product = new Domain.Entities.Product(request.Amount)
         {
@@ -47,6 +47,6 @@ public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Produ
         _applicationDbContext.Products.Add(product);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<ProductDto>(product);
+        return product.Id;
     }
 }

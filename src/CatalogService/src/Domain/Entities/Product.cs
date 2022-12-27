@@ -20,20 +20,17 @@ public class Product : BaseEntity
 
     public int CatalogId { get; set; }
 
-    [GraphQLIgnore]
     public Catalog Catalog { get; set; }
 
     public decimal Price { get; set; }
 
     public uint Amount { get => _amount; }
     
-    [GraphQLIgnore]
     public void AddAmount(uint amount)
     {
         _amount += amount;
     }
     
-    [GraphQLIgnore]
     public void RemoveAmount(uint amount)
     {
         if (_amount == 0)
@@ -49,7 +46,6 @@ public class Product : BaseEntity
         _amount -= amount;
     }
 
-    [GraphQLIgnore]
     public bool IsEnoughAmount(uint amount)
     {
         return _amount >= amount;

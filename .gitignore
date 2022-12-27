@@ -353,3 +353,4 @@ MigrationBackup/
 /src/.idea/.idea.src/.idea
 /src/CatalogService/tests/Application.IntegrationTests/Catalog/GraphQL/__snapshots__/CatalogGql.GetCatalogs_Success.snap
 /src/CatalogService/tests/Application.IntegrationTests/Catalog/GraphQL/__snapshots__/CatalogGql.CreateCatalog_Success.snap
+/src/.sonarqube

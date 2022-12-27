@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Microsoft.Extensions.DependencyInjection.Catalog.Commands.UpdateCatalog;
 
-public class UpdateCatalogCommand : IRequest<CatalogDto>
+public class UpdateCatalogCommand : IRequest<int>
 {
     public int Id { get; set; }
 
@@ -19,7 +19,7 @@ public class UpdateCatalogCommand : IRequest<CatalogDto>
 }
 
 
-public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand, CatalogDto>
+public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand, int>
 {
     private IApplicationDbContext _applicationDbContext;
     private IMapper _mapper;
@@ -30,7 +30,7 @@ public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand,
         _mapper = mapper;
     }
 
-    public async Task<CatalogDto> Handle(UpdateCatalogCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(UpdateCatalogCommand request, CancellationToken cancellationToken)
     {
         var catalog = _applicationDbContext.Catalogs.Find(request.Id);
 
@@ -45,6 +45,6 @@ public class UpdateCatalogCommandHandler : IRequestHandler<UpdateCatalogCommand,
 
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<CatalogDto>(catalog);
+        return catalog.Id;
     }
 }

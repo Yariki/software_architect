@@ -32,7 +32,7 @@ namespace CatalogService.Application.IntegrationTests.Product.Commands
 
             var result = await SendAsync(add);
 
-            result.Should().NotBeNull();
+            result.Should().BeGreaterThan(0);
             
         }
     }

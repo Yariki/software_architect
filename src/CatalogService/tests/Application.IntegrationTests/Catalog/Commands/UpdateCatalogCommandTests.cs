@@ -30,10 +30,10 @@ public class UpdateCatalogCommandTests : BaseTestFixture
         
         var cmd = new CreateCatalogCommand() { Name = "TestCatalog" };
 
-        var catalog = await SendAsync(cmd);
+        var catalogId = await SendAsync(cmd);
 
         //act
-        var update = new UpdateCatalogCommand() { Id = catalog.Id, Name = updatedName };
+        var update = new UpdateCatalogCommand() { Id = catalogId, Name = updatedName };
 
         var result = await SendAsync(update);
 

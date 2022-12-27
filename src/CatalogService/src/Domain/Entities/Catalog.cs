@@ -9,8 +9,7 @@ public class Catalog : BaseEntity
     public string Image { get; set; }
 
     public int? CatalogId { get; set; }
-
-    [GraphQLIgnore]
+    
     public virtual Catalog Parent { get; set; }
 
     public virtual ICollection<Catalog> Childrens { get; set; }
