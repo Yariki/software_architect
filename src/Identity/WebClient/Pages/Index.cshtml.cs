@@ -5,13 +5,9 @@ namespace WebClient.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
-
-    public IndexModel(ILogger<IndexModel> logger)
-    {
-        _logger = logger;
-    }
-
+    /// <summary>
+    /// By Design
+    /// </summary>
     public void OnGet()
     {
 

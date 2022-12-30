@@ -5,13 +5,9 @@ namespace WebClient.Pages;
 
 public class PrivacyModel : PageModel
 {
-    private readonly ILogger<PrivacyModel> _logger;
-
-    public PrivacyModel(ILogger<PrivacyModel> logger)
-    {
-        _logger = logger;
-    }
-
+    /// <summary>
+    /// By Design
+    /// </summary>
     public void OnGet()
     {
     }

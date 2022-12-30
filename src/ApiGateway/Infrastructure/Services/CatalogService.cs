@@ -12,20 +12,17 @@ public class CatalogService : ICatalogService
 {
     private readonly UrlConfig _urlConfig;
     private readonly HttpClient _httpClient;
-    private readonly ILogger<CatalogService> _catalogService;
-
-
-    public CatalogService(HttpClient httpClient,  IOptions<UrlConfig> urlConfig, ILogger<CatalogService> catalogService)
+   
+    public CatalogService(HttpClient httpClient,  IOptions<UrlConfig> urlConfig)
     {
         _urlConfig = urlConfig.Value;
         _httpClient = httpClient;
-        _catalogService = catalogService;
     }
     
     public async Task<Dictionary<string,string>> GetCatalogProperties(int id)
     {
         var url = $"{_urlConfig.CatalogService}{UrlConfig.CatalogServiceUrls.GetCatalogProperties(id)}";
-        var response = await _httpClient.GetAsync(url);
+        var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
 

@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
+
 using Identity.Api.Permissions;
 
 namespace Identity.Api;
@@ -6,7 +7,7 @@ namespace Identity.Api;
 public static class Config
 {
 
-    public static IEnumerable<ApiResource> ApiResources = new List<ApiResource>()
+    public readonly static IEnumerable<ApiResource> ApiResources = new List<ApiResource>()
     {
         new ApiResource("catalog", "Catalog Service")
         {
@@ -16,7 +17,7 @@ public static class Config
             }
         }
     };
-    
+
     public static IEnumerable<IdentityResource> IdentityResources =>
         new IdentityResource[]
         {
@@ -30,11 +31,11 @@ public static class Config
             }
         };
 
-    public static IEnumerable<ApiScope> Scopes = new List<ApiScope>()
+    public readonly static IEnumerable<ApiScope> Scopes = new List<ApiScope>()
     {
         new ApiScope("catalog")
     };
-    
+
     public static IEnumerable<Client> Clients =>
         new Client[]
         {
@@ -47,14 +48,14 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Code,
 
                 RedirectUris = { "https://localhost:5002/signin-oidc" },
-               
+
                 PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = 
-                { 
-                    "openid", 
-                    "profile", 
+                AllowedScopes =
+                {
+                    "openid",
+                    "profile",
                     "catalog",
                     CatalogPermissions.Permissions
                 }

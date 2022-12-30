@@ -49,9 +49,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "BuildingBlocks\Logging\Logging.csproj", "{B420A488-2404-4C96-A41D-E39393FA441C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.GraphQL", "Catalog.GraphQL\Catalog.GraphQL.csproj", "{28420CF0-F15A-49B6-83A4-5CA84A8B6A52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.GraphQL", "Catalog.GraphQL\Catalog.GraphQL.csproj", "{28420CF0-F15A-49B6-83A4-5CA84A8B6A52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Abstractions", "Catalog.Abstractions\Catalog.Abstractions.csproj", "{7C1B27A5-3C32-4C4E-AF67-B98F1E0D02F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Abstractions", "Catalog.Abstractions\Catalog.Abstractions.csproj", "{7C1B27A5-3C32-4C4E-AF67-B98F1E0D02F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{75E2BA2D-17FA-46F7-8BAA-246F31709A3B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

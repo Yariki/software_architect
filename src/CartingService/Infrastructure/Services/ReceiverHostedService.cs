@@ -6,22 +6,20 @@ public class ReceiverHostedService : BackgroundService
 {
 
     private readonly IEventReceiver _eventReceiver;
-    private readonly ILogger<ReceiverHostedService> _logger;
 
-    public ReceiverHostedService(IEventReceiver eventReceiver, ILogger<ReceiverHostedService> logger)
+    public ReceiverHostedService(IEventReceiver eventReceiver)
     {
         _eventReceiver = eventReceiver;
-        _logger = logger;
     }
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
-        await _eventReceiver.StartReceiveMessageAsync();
+        await _eventReceiver.StartReceiveMessageAsync().ConfigureAwait(false);
     }
 
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        await _eventReceiver.DisposeAsync();
+        await _eventReceiver.DisposeAsync().ConfigureAwait(false);
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)

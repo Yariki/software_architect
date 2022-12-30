@@ -23,3 +23,9 @@ dotnet user-secrets remove "<KEY>"
 ```ps
 dotnet user-secrets clear
 ```
+
+# Install dotnet-format
+
+```ps
+dotnet tool install -g dotnet-format
+```

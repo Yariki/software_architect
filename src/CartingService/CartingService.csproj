@@ -8,6 +8,12 @@
     <UserSecretsId>a25f8e14-7507-4dbf-8023-9309c53c54ed</UserSecretsId>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AnalysisLevel>latest</AnalysisLevel>
+	</PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Application\Exceptions\**" />
     <Content Remove="Application\Exceptions\**" />
