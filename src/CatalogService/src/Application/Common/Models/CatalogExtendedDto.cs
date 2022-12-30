@@ -3,7 +3,7 @@ using CatalogService.Domain.Entities;
 
 namespace CatalogService.Application.Common.Models;
 
-public class CatalogExtendedDto : BaseDto , IMapFrom<Catalog>
+public class CatalogExtendedDto : BaseDto , IMapFrom<Domain.Entities.Catalog>
 {
     public int Id { get; set; }
     

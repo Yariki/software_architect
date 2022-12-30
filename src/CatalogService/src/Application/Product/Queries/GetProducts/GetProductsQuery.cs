@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using CatalogService.Application.Common.Interfaces;
+using Catalog.Abstractions;
 using CatalogService.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

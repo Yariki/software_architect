@@ -27,8 +27,7 @@ public class CreateCatalogCommandTests : BaseTestFixture
 
         var result = await SendAsync(command);
 
-        result.Should().NotBeNull();
-        result.Name.Should().BeEquivalentTo(name);
+        result.Should().BeGreaterThan(0);
     }
 
 }

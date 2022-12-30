@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using HotChocolate;
 
 namespace CatalogService.Domain.Common;
 

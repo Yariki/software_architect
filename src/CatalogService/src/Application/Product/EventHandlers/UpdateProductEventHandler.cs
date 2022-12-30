@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Catalog.Abstractions;
 using CatalogService.Application.Common.Interfaces;
 using CatalogService.Domain.Entities;
 using CatalogService.Domain.Events;

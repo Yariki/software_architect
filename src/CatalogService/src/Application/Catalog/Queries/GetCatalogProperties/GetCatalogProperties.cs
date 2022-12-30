@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using Catalog.Abstractions;
 using CatalogService.Application.Common.Interfaces;
 using CatalogEntity = CatalogService.Domain.Entities.Catalog;
 using MediatR;

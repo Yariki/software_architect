@@ -1,5 +1,8 @@
-﻿using CatalogService.Application.Common.Exceptions;
+﻿using AutoMapper;
+using Catalog.Abstractions;
+using CatalogService.Application.Common.Exceptions;
 using CatalogService.Application.Common.Interfaces;
+using CatalogService.Application.Common.Models;
 using CatalogService.Domain.Events;
 using MediatR;
 
@@ -24,10 +27,13 @@ public class UpdateProductCommand : IRequest<int>
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, int>
 {
     private readonly IApplicationDbContext _applicationDbContext;
+    private readonly IMapper _mapper;
 
-    public UpdateProductCommandHandler(IApplicationDbContext applicationDbContext)
+    public UpdateProductCommandHandler(IApplicationDbContext applicationDbContext,
+        IMapper mapper)
     {
         _applicationDbContext = applicationDbContext;
+        _mapper = mapper;
     }
 
     public async Task<int> Handle(UpdateProductCommand request, CancellationToken cancellationToken)

@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using Catalog.Abstractions;
 using CatalogService.Application.Common.Interfaces;
 using CatalogService.Application.Common.Models;
 using MediatR;
 
 namespace Microsoft.Extensions.DependencyInjection.Catalog.Commands.CreateCatalog;
 
-public class CreateCatalogCommand : IRequest<CatalogDto>
+public class CreateCatalogCommand : IRequest<int>
 {
     public string Name { get; set; }
 
@@ -16,7 +17,7 @@ public class CreateCatalogCommand : IRequest<CatalogDto>
 }
 
 
-public class CreateCatalogCommandHandler : IRequestHandler<CreateCatalogCommand, CatalogDto>
+public class CreateCatalogCommandHandler : IRequestHandler<CreateCatalogCommand, int>
 {
     private IApplicationDbContext _applicationDbContext;
     private IMapper _mapper;
@@ -27,7 +28,7 @@ public class CreateCatalogCommandHandler : IRequestHandler<CreateCatalogCommand,
         _mapper = mapper;
     }
     
-    public async Task<CatalogDto> Handle(CreateCatalogCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateCatalogCommand request, CancellationToken cancellationToken)
     {
         var catalog = new CatalogService.Domain.Entities.Catalog()
         {
@@ -37,6 +38,6 @@ public class CreateCatalogCommandHandler : IRequestHandler<CreateCatalogCommand,
         _applicationDbContext.Catalogs.Add(catalog);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
         
-        return _mapper.Map<CatalogDto>(catalog);    
+        return catalog.Id;    
     }
 }

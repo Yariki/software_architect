@@ -66,6 +66,14 @@ services:
       retries: 20
       test: curl --write-out 'HTTP %{http_code}' --fail --silent --output /dev/null http://localhost:5601/api/status
 
+  mssql:
+    image: 'mcr.microsoft.com/mssql/server'
+    ports:
+        - '1433:1433'
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=Secret1234
+
 volumes:
   esdata:
     driver: local

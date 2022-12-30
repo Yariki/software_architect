@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="MediatR" Version="9.0.0" />
+      <PackageReference Include="HotChocolate.Data" Version="12.15.2" />
     </ItemGroup>
 
 </Project>

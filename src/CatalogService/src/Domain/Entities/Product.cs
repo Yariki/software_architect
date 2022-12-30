@@ -1,4 +1,6 @@
-﻿namespace CatalogService.Domain.Entities;
+﻿using HotChocolate;
+
+namespace CatalogService.Domain.Entities;
 public class Product : BaseEntity
 {
     private uint _amount;
@@ -23,12 +25,12 @@ public class Product : BaseEntity
     public decimal Price { get; set; }
 
     public uint Amount { get => _amount; }
-
+    
     public void AddAmount(uint amount)
     {
         _amount += amount;
     }
-
+    
     public void RemoveAmount(uint amount)
     {
         if (_amount == 0)

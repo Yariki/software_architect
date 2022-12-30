@@ -19,6 +19,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.csproj" />
+        <ProjectReference Include="..\..\..\Catalog.Abstractions\Catalog.Abstractions.csproj" />
         <ProjectReference Include="..\Application\Catalog.Application.csproj" />
     </ItemGroup>
 

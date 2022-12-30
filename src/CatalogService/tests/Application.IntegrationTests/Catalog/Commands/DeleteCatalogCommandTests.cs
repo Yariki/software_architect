@@ -28,12 +28,12 @@ public class DeleteCatalogCommandTests : BaseTestFixture
         var result = await SendAsync(cmd);
 
         //act
-        var delete = new DeleteCatalogCommand() { Id = result.Id };
+        var delete = new DeleteCatalogCommand() { Id = result };
 
         await SendAsync(delete);
 
         //assert
-        var catalog = await FindAsync<Domain.Entities.Catalog>(result.Id);
+        var catalog = await FindAsync<Domain.Entities.Catalog>(result);
 
         catalog.Should().BeNull();
     }

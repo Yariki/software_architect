@@ -1,4 +1,7 @@
-﻿using CatalogService.Application.Common.Interfaces;
+﻿using AutoMapper;
+using Catalog.Abstractions;
+using CatalogService.Application.Common.Interfaces;
+using CatalogService.Application.Common.Models;
 using MediatR;
 
 namespace CatalogService.Application.Product.Commands.AddProduct;
@@ -21,10 +24,13 @@ public class AddProductCommand : IRequest<int>
 public class AddProductCommandHandler : IRequestHandler<AddProductCommand, int>
 {
     private readonly IApplicationDbContext _applicationDbContext;
+    private readonly IMapper _mapper;
 
-    public AddProductCommandHandler(IApplicationDbContext applicationDbContext)
+    public AddProductCommandHandler(IApplicationDbContext applicationDbContext,
+        IMapper mapper)
     {
         _applicationDbContext = applicationDbContext;
+        _mapper = mapper;
     }
 
     public async Task<int> Handle(AddProductCommand request, CancellationToken cancellationToken)

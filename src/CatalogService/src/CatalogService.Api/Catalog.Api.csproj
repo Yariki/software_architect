@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Logging\Logging.csproj" />
+    <ProjectReference Include="..\..\..\Catalog.GraphQL\Catalog.GraphQL.csproj" />
     <ProjectReference Include="..\Infrastructure\Catalog.Infrastructure.csproj" />
   </ItemGroup>
 

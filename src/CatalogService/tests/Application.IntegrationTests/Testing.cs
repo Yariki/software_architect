@@ -1,4 +1,6 @@
-﻿using CatalogService.Infrastructure.Persistence;
+﻿using System.Runtime.CompilerServices;
+using CatalogService.Infrastructure.Persistence;
+using HotChocolate.Execution;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Respawn;
+using System.Text;
 
 namespace CatalogService.Application.IntegrationTests;
 
@@ -18,12 +21,15 @@ public partial class Testing
     private static Checkpoint _checkpoint = null!;
     private static string? _currentUserId;
 
+    public static RequestExecutorProxy Executor;
+
     [OneTimeSetUp]
     public void RunBeforeAnyTests()
     {
         _factory = new CustomWebApplicationFactory();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
         _configuration = _factory.Services.GetRequiredService<IConfiguration>();
+        Executor = _factory.Services.GetRequiredService<RequestExecutorProxy>();
 
         _checkpoint = new Checkpoint
         {
@@ -81,6 +87,46 @@ public partial class Testing
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         return await context.Set<TEntity>().CountAsync();
+    }
+    
+    public static async Task<IExecutionResult> ExecuteRequestAsync(
+        Action<IQueryRequestBuilder> configureRequest,
+        CancellationToken cancellationToken = default)
+    {
+        await using var scope = _factory.Services.CreateAsyncScope();
+
+        var requestBuilder = new QueryRequestBuilder();
+        requestBuilder.SetServices(scope.ServiceProvider);
+        configureRequest(requestBuilder);
+        var request = requestBuilder.Create();
+
+        using var result = await Executor.ExecuteAsync(request, cancellationToken);
+
+        result.ExpectQueryResult();
+
+        return result;
+    }
+
+    public static async IAsyncEnumerable<string> ExecuteRequestAsStreamAsync(
+        Action<IQueryRequestBuilder> configureRequest,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        await using var scope = _factory.Services.CreateAsyncScope();
+
+        var requestBuilder = new QueryRequestBuilder();
+        requestBuilder.SetServices(scope.ServiceProvider);
+        configureRequest(requestBuilder);
+        var request = requestBuilder.Create();
+
+        using var result = await Executor.ExecuteAsync(request, cancellationToken);
+
+        await foreach (var element in result.ExpectResponseStream().ReadResultsAsync().WithCancellation(cancellationToken))
+        {
+            using (element)
+            {
+                yield return element.ToJson();
+            }
+        }
     }
 
     [OneTimeTearDown]

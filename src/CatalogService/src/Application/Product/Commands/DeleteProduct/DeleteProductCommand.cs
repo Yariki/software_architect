@@ -1,9 +1,11 @@
-﻿using CatalogService.Application.Common.Exceptions;
+﻿using Catalog.Abstractions;
+using CatalogService.Application.Common.Exceptions;
 using CatalogService.Application.Common.Interfaces;
 using MediatR;
 
 namespace CatalogService.Application.Product.Commands.DeleteProduct;
-public class DeleteProductCommand : IRequest<int>
+public class 
+    DeleteProductCommand : IRequest<int>
 {
     public int Id { get; set; }
 }

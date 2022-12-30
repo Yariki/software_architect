@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace CatalogService.Application.Common.Interfaces;
+namespace Catalog.Abstractions;
 
 public interface IApplicationDbContext
 {
-    DbSet<Catalog> Catalogs { get; }
+    DbSet<CatalogService.Domain.Entities.Catalog> Catalogs { get; }
 
-    DbSet<Domain.Entities.Product> Products { get; }
+    DbSet<CatalogService.Domain.Entities.Product> Products { get; }
     DbSet<Outbox> Outboxes { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
