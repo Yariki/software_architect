@@ -1,0 +1,15 @@
+name: build-catalog-debug
+
+on: 
+  push:
+    branches: [ master, develop, release,  feature/yariki_w1_ci ]
+  pull_request:
+    branches: [ master, develop, release, feature/yariki_w1_ci ]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-base.yml
+    with:
+      configuration: Release
+      project_file: src/CatalogService/src/CatalogService.Api/Catalog.Api.csproj
+      project_test_file: src/CatalogService/tests/Domain.UnitTests/Catalog.Domain.UnitTests.csproj
