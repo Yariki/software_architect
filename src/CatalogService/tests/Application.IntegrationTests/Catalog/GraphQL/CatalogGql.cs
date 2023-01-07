@@ -1,4 +1,6 @@
 ﻿using Catalog.GraphQL.Catalog;
+using Microsoft.Extensions.DependencyInjection.Catalog.Commands.CreateCatalog;
+
 using NUnit.Framework;
 using Snapshooter.NUnit;
 
@@ -20,14 +22,13 @@ public class CatalogGql : BaseTestFixture
     public async Task CreateCatalog_Success()
     {
         var result = await Testing.ExecuteRequestAsync(b => b.SetQuery(
-                @"mutation($catalogInput: CatalogInput!) {
-                        addCatalog(catalogInput: $catalogInput) {
+                @"mutation($createCommand: CreateCatalogCommand!) {
+                        addCatalog(createCommand: $createCommand) {
                             id
                         }
                     }")
-            .SetVariableValue("catalogInput", new CatalogInput()
-            {
-                Id = 0,
+            .SetVariableValue("catalogInput", new CreateCatalogCommand()
+            {   
                 CatalogId = 0,
                 Name = "Test",
                 Image = "sdkfj"
