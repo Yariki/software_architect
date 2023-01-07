@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <UserSecretsId>5e78db56-d7bd-4017-a102-e7741bd27e0e</UserSecretsId>
+	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
 	<PropertyGroup>

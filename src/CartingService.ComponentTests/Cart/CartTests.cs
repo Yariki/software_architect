@@ -9,6 +9,7 @@ using FluentAssertions;
 using Newtonsoft.Json;
 
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -34,12 +35,13 @@ public class CartTests : IClassFixture<CustomWebApplicationFactory<Program>>
     [Fact]
     public async Task GetCart_ReturnCart()
     {
-        var response = await _client.GetAsync($"/cart/{Consts.CartId}");
+        var response = await _client.GetAsync($"api/v2/cart/{Consts.CartId}");
 
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
-        var cart = JsonConvert.DeserializeObject<CartDto>(content);
-        cart.Should().NotBeNull();
+        var cartItems = JsonConvert.DeserializeObject<List<CartItemDto>>(content);
+        cartItems.Should().NotBeNull();
+        cartItems.Count.Should().BeGreaterThan(0);
     }
 
     [Fact]
@@ -60,7 +62,7 @@ public class CartTests : IClassFixture<CustomWebApplicationFactory<Program>>
         };
 
         //act 
-        var response = await _client.PostAsJsonAsync("/cart/add", addedItem);
+        var response = await _client.PostAsJsonAsync("api/v2/cart/add", addedItem);
 
         //assert
 
@@ -82,7 +84,7 @@ public class CartTests : IClassFixture<CustomWebApplicationFactory<Program>>
         };
 
         //act
-        var request = new HttpRequestMessage(HttpMethod.Delete, "/cart/remove")
+        var request = new HttpRequestMessage(HttpMethod.Delete, "api/v2/cart/remove")
         {
             Content = new StringContent(JsonConvert.SerializeObject(removeCommand), Encoding.UTF8, "application/json")
         };
