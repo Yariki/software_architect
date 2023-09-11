@@ -1,0 +1,40 @@
+name: base
+
+on: 
+  workflow_call:
+    inputs:
+      configuration:
+        required: true
+        type: string
+        default: Release
+      project_file:
+        required: true
+        type: string
+      project_test_file:
+        required: true
+        type: string
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: setup
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: restore
+      run: dotnet restore ${{inputs.project_file}}
+
+    - name: build
+      run: dotnet build ${{inputs.project_file}} --configuration ${{inputs.configuration}} --no-restore
+
+    - name: test
+      run: dotnet test ${{inputs.project_test_file}} --configuration ${{inputs.configuration}} --no-build --no-restore  -l trx -v normal
+
+    - name: publish
+      run: dotnet publish ${{inputs.project_file}} --configuration ${{inputs.configuration}} --no-build --no-restore
+

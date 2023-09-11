@@ -19,7 +19,6 @@ namespace CartingService.ComponentTests.Core
                 using (var scope = sp.CreateScope())
                 {
                     SeedDb(scope);
-
                 }
             });
         }
@@ -44,6 +43,23 @@ namespace CartingService.ComponentTests.Core
                     Name = "Test product",
                     Quantity = 1
                 });
+                cart.Items.Add(new CartItem()
+                {
+                    Id = 5,
+                    Image = string.Empty,
+                    Price = 10.5m,
+                    Name = "Test product",
+                    Quantity = 1
+                });
+                cart.Items.Add(new CartItem()
+                {
+                    Id = 6,
+                    Image = string.Empty,
+                    Price = 10.5m,
+                    Name = "Test product",
+                    Quantity = 1
+                });
+
                 collection.Insert(cart);
             }
             catch (Exception e)

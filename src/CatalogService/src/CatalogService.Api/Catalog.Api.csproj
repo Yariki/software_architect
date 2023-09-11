@@ -15,6 +15,18 @@
 	</PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'CatalogService.Api' " />
+	
+	
+	<ItemGroup>
+		<Content Remove="appsettings.json" />
+		<Content Remove="appsettings.Development.json" />
+
+		<None Include="appsettings.json" CopyToPublishDirectory="Never" ExcludeFromSingleFile="true"/>
+		<None Include="appsettings.Development.json" CopyToPublishDirectory="Never" ExcludeFromSingleFile="true"/>
+		
+	</ItemGroup>	
+	
+	
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
       <PrivateAssets>all</PrivateAssets>

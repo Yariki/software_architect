@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 namespace CatalogService.Application.Common.Models;
 
 
@@ -13,6 +15,7 @@ public class BaseDto
     {
     }
 
+    [IgnoreMap]
     public List<Link> Links { get; set; } = new List<Link>();
 
 }
